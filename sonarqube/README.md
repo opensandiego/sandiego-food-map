@@ -21,4 +21,4 @@ sonar-scanner
 ```
 
 ## Reference
-For more information visit the (Docker Hub)[https://hub.docker.com/_/sonarqube] project page.
+For more information visit the [Docker Hub](https://hub.docker.com/_/sonarqube) project page.
