@@ -14,9 +14,9 @@ Simply put: what are you _not_ doing with the project at this time? This section
 Now that you've defined what you won't do with this project (at least in the beginning): what are you going to do? What is the minimum functionality required to launch a successful initial product? Define that here!
 
 ## Diorama-rama
-Can you put your project into pictures? Sure you can! We recommend using (draw.io)[https://draw.io] because it's free and you can make pretty diagrams of all sorts like this:
+Can you put your project into pictures? Sure you can! We recommend using [draw.io](https://draw.io) because it's free and you can make pretty diagrams of all sorts like this:
 
-!(draw.io example)[/docs/img/mind-map-with-drawio.png]
+![draw.io example](https://github.com/CodeForBaltimore/ProjectTemplate/blob/master/docs/img/mind-map-with-drawio.png?raw=true)
 
 ## Components
 Break down your project into as many different sections or components as possible. This could include various pages for a web app, or endpoints for an API project just to name a couple of examples. Try to include any wireframes or mock-ups you can to fully illustrate your idea for each piece!
