@@ -18,7 +18,7 @@ What does someone need to do to get started with your project? Do they need to:
 
 In this section of the `README` you should include any information a new contributor or user of the project needs to know to get running locally and setup.
 
-## Using his product
+## Using this product
 How would someone use this product? Give a few examples here.
 
 ## Testing
