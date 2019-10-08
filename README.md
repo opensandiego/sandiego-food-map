@@ -26,3 +26,8 @@ What does someone need to do to test their work? Have you included a specific te
 
 ## Sources and Links
 If referencing any third party service, code, etc, cite it here.
+
+This template is in use on a number of other Code for Baltimore projects. For examples of use in various ways, please see the followings examples:
+
+* *NodeJs* = [JuryInstructions](https://github.com/CodeForBaltimore/JuryInstructions)
+* *Python* = placeholder for Python hello world example.
