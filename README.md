@@ -1,5 +1,3 @@
-![Code for Baltimore](/docs/img/CfB.png)
-
 # ProjectTemplate
 The project template for Code for Baltimore github projects.  This project will help your project get started by giving you:
 * A standard issues template
@@ -31,3 +29,7 @@ This template is in use on a number of other Code for Baltimore projects. For ex
 
 * *NodeJs* = [JuryInstructions](https://github.com/CodeForBaltimore/JuryInstructions)
 * *Python* = [ProjectTemplate-Python](https://github.com/CodeForBaltimore/ProjectTemplate-Python)
+
+<p align="center">
+    <img src="docs/img/CfB.png" width="400">
+</p>
