@@ -1,3 +1,17 @@
+<!-- TOC -->
+
+- [Tech Spec](#tech-spec)
+    - [Overview](#overview)
+    - [Scenarios](#scenarios)
+    - [Non Goals](#non-goals)
+    - [Minimum Viable Product](#minimum-viable-product)
+    - [Diorama-rama](#diorama-rama)
+    - [Components](#components)
+    - [Roadmap](#roadmap)
+    - [Contact Info](#contact-info)
+
+<!-- /TOC -->
+
 # Tech Spec
 The _Tech Spec_ is an important part of a project, but it's a part that's often overlooked or skipped. The intention of this document is to organize everyone's thoughts on the project into one simple, succinct document. It doesn't have to be super detailed but filling out this document will help keep everyone focused on the project goal.
 

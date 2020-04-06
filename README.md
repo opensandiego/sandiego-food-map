@@ -1,3 +1,15 @@
+<!-- TOC -->
+
+- [ProjectTemplate](#projecttemplate)
+    - [Documentation](#documentation)
+- [Setup](#setup)
+    - [Using this product](#using-this-product)
+    - [Testing](#testing)
+- [Sources and Links](#sources-and-links)
+    - [Contributors ✨](#contributors-)
+
+<!-- /TOC -->
+
 # ProjectTemplate
 The project template for Code for Baltimore github projects.  This project will help your project get started by giving you:
 * A standard issues template
@@ -8,7 +20,7 @@ The project template for Code for Baltimore github projects.  This project will 
 ## Documentation
 We've included a `docs` folder with a template [Tech Spec](/docs/Tech_Spec.md) and [Best Practices](/docs/Best_Practices.md) document, though using Github's Wiki capabilities is also a good idea. This will get you started with documenting your project.  Other documents and relevant information that has no other place can live in the `docs` folder.  Replace this paragraph with a brief breakdown of what you've included in your `docs` folder.
 
-## Setup
+# Setup
 What does someone need to do to get started with your project? Do they need to:
 * install software?
 * run some commands?
@@ -22,13 +34,21 @@ How would someone use this product? Give a few examples here.
 ## Testing
 What does someone need to do to test their work? Have you included a specific testing framework or guideline (hint: you should)? Any information about testing should be added here.
 
-## Sources and Links
+# Sources and Links
 If referencing any third party service, code, etc, cite it here.
 
-This template is in use on a number of other Code for Baltimore projects. For examples of use in various ways, please see the followings examples:
+## Contributors ✨
 
-* *NodeJs* = [JuryInstructions](https://github.com/CodeForBaltimore/JuryInstructions)
-* *Python* = [ProjectTemplate-Python](https://github.com/CodeForBaltimore/ProjectTemplate-Python)
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 <p align="center">
     <img src="docs/img/CfB.png" width="400">
