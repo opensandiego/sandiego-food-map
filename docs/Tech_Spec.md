@@ -1,3 +1,8 @@
+
+
+# Tech Spec
+The _Tech Spec_ is an important part of a project, but it's a part that's often overlooked or skipped. The intention of this document is to organize everyone's thoughts on the project into one simple, succinct document. It doesn't have to be super detailed but filling out this document will help keep everyone focused on the project goal.
+
 <!-- TOC -->
 
 - [Tech Spec](#tech-spec)
@@ -11,9 +16,6 @@
     - [Contact Info](#contact-info)
 
 <!-- /TOC -->
-
-# Tech Spec
-The _Tech Spec_ is an important part of a project, but it's a part that's often overlooked or skipped. The intention of this document is to organize everyone's thoughts on the project into one simple, succinct document. It doesn't have to be super detailed but filling out this document will help keep everyone focused on the project goal.
 
 ## Overview
 This section should be comprised of 1-3 short paragraphs giving a high-level overview of what the project hopes to accomplish. This overview should quickly define what the project hopes to do, what this document will cover, and what will not be covered. 

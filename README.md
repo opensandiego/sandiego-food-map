@@ -1,6 +1,10 @@
+# ProjectTemplate
+The project template for Code for Baltimore github projects.  
+
 <!-- TOC -->
 
 - [ProjectTemplate](#projecttemplate)
+    - [What is this?](#what-is-this)
     - [Documentation](#documentation)
 - [Setup](#setup)
     - [Using this product](#using-this-product)
@@ -10,8 +14,8 @@
 
 <!-- /TOC -->
 
-# ProjectTemplate
-The project template for Code for Baltimore github projects.  This project will help your project get started by giving you:
+## What is this? 
+This project will help your project get started by giving you:
 * A standard issues template
 * A standard pull request
 * A standard docs folder with example documentation.
