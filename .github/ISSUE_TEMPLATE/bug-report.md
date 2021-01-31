@@ -19,8 +19,7 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Environment**
-A concise description of your environment: GatorGrader version,
-python version, operating system, etc.
+A concise description of your environment: python version, operating system, etc.
 
 **Additional context**
 Add any other context about the problem here.

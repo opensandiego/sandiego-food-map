@@ -1,13 +1,6 @@
 {
+    "name": "San Diego Food Map",
     "status": "Development",
-    "thumbnailUrl": "https://codeforbaltimore.org/icon.png",
-    "geography": "Greater Baltimore, MD",
-    "politicalEntity":"",
-    "type": "API",
-    "needs": [
-            {"need": "Typescript Dev"}
-    ],
-    "categories": [
-            {"category": "Example"}
-    ]
+    "geography": "San Diego, CA",
+    "tags": ["map", "food map"]
 }
