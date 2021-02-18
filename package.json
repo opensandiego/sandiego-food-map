@@ -1,0 +1,22 @@
+{
+  "name": "san_diego_food_map",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --config ./webpack.config.js --mode development"
+  },
+  "author": "Open San Diego",
+  "license": "ISC",
+  "dependencies": {
+    "css-loader": "^4.3.0",
+    "file-loader": "^6.1.0",
+    "html-loader": "^1.3.1",
+    "html-webpack-plugin": "^4.5.0",
+    "style-loader": "^1.3.0",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
