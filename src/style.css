@@ -17,6 +17,11 @@ h1 {
     font-size: 24px;
 }
 
+header ul {
+    list-style: none;
+    position: absolute; 
+}
+
 #map {
     position: absolute;
     top: 30px;
