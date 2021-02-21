@@ -6,8 +6,10 @@ import ReactDOM from "react-dom";
 
 // Leaflet Style and JS for React
 import 'leaflet/dist/leaflet.css';
+import 'react-leaflet-markercluster/dist/styles.min.css';
 import marker_icon from 'leaflet/dist/images/marker-icon.png'
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet'
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 // React and MAterial - UI
 import clsx from 'clsx';
@@ -176,17 +178,33 @@ function FoodMap(){
         return true
     })
 
-    // Generate visible markers
-    const markers = filtered_list.map( (d) => {
-        const pos = [d.Geo_Location__Latitude__s,d.Geo_Location__Longitude__s];
-        return <Marker key={d.Id} position={pos} icon={blueIcon}>
-            <Popup>
-                {d.Name}<br/>
-                {d.Physical_Address__c}, {d.Physical_City__c}<br/>
-                {d.Phone_Number__c}<br/>
-                <Button onClick={() => { setDetail(d) }} >Learn More</Button>
-            </Popup>
-        </Marker>
+    // Group markers by zip
+    const by_zip = filtered_list.reduce( (by_zip,d) => {
+            if(!by_zip.hasOwnProperty(d.Physical_Zip_Code__c)){ 
+                by_zip[d.Physical_Zip_Code__c] = [] 
+            }
+            by_zip[d.Physical_Zip_Code__c].push(d); 
+            return by_zip;
+    },{})
+
+    window.by_zip = by_zip
+    // Then generate marker clusters
+    const marker_clusters = Object.entries(by_zip).map( zip_data => {
+        const markers = zip_data[1].map( d => {
+            const pos = [d.Geo_Location__Latitude__s,d.Geo_Location__Longitude__s];
+            const marker = <Marker key={d.Id} position={pos} icon={blueIcon}>
+                <Popup>
+                    {d.Name}<br/>
+                    {d.Physical_Address__c}, {d.Physical_City__c}<br/>
+                    {d.Phone_Number__c}<br/>
+                    <Button onClick={() => { setDetail(d) }} >Learn More</Button>
+                </Popup>
+            </Marker>
+            return marker
+        })
+        return <MarkerClusterGroup key={zip_data[0]}>
+            { markers }
+        </MarkerClusterGroup>
     })
 
     // Generate Drawer items
@@ -301,7 +319,7 @@ function FoodMap(){
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    {markers}
+                    {marker_clusters}
                 </MapContainer>
             </main>
             {detailDialog}
