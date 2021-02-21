@@ -25,6 +25,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -299,7 +300,11 @@ function FoodMap(){
                 </div>
                 <Divider />
                 <List>
-                    
+                    <ListItem>
+                        <ListItemText>
+                        Filtering Coming Soon!
+                        </ListItemText>
+                    </ListItem> 
                 </List>
             </Drawer>
             <main
