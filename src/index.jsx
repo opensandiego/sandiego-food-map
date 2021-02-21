@@ -1,11 +1,16 @@
 import './style.css';
+
+// React
+import React, { useEffect } from "react";
+import ReactDOM from "react-dom";
+
+// Leaflet Style and JS for React
 import 'leaflet/dist/leaflet.css';
 import marker_icon from 'leaflet/dist/images/marker-icon.png'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
+// React and MAterial - UI
 import clsx from 'clsx';
-import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -16,22 +21,30 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider';
-import parse from 'csv-parse/lib/sync';
-import axios from 'axios';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Link from '@material-ui/core/Link';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
+// Load And Parse Data
+import parse from 'csv-parse/lib/sync';
+import axios from 'axios';
 
+
+// Constants
 const SAN_DIEGO_CENTER = [32.8546305,-117.051348]
 const SAN_DIEGO_ZOOM = 10
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/1PACX-1vTSnF1wYkCiAbHAqhs_WG2i0EjVh5JPRTAp5pQW-9b_52TsYuaEOzNgz8EbFEGO6JB1o2Okd4QWRAWR/pub?output=csv"
+const DRAWER_WIDTH = 240;
 
 // leaflet css does not import into webpack nicely
 const blueIcon = L.icon({
     iconUrl: marker_icon
 })
 
+// clean tel numbers for tel+ links
+const telLinkRE = /[^\d]/g
 
-const drawerWidth = 240;
 
 // From Drawer Example
 // https://material-ui.com/components/drawers/
@@ -46,8 +59,8 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
+    width: `calc(100% - ${DRAWER_WIDTH}px)`,
+    marginLeft: DRAWER_WIDTH,
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -60,11 +73,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
   },
   drawer: {
-    width: drawerWidth,
+    width: DRAWER_WIDTH,
     flexShrink: 0,
   },
   drawerPaper: {
-    width: drawerWidth,
+    width: DRAWER_WIDTH,
   },
   drawerHeader: {
     display: 'flex',
@@ -80,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: -drawerWidth,
+    marginLeft: -DRAWER_WIDTH,
     justifyContent: 'flex-end',
   },
   map: {
@@ -109,11 +122,12 @@ function FoodMap(){
     useEffect(() => {
         if(data.length == 0){
             axios.get(CSV_URL).then((response) => {
-                console.log(response)
-                setData(parse(
+                const locations = parse(
                     response.data, 
                     { columns: true,skip_empty_lines: true}
-                ))
+                )
+                console.log(locations)
+                setData(locations)
             })
         }
     })
@@ -134,6 +148,14 @@ function FoodMap(){
                 {d.Name}<br/>
             </Popup>
         </Marker>
+    })
+
+    const list_items = data.map( (d) => {
+        const phone = `tel:${d.Phone_Number__c.replaceAll(telLinkRE,'')}`
+        return <ListItem key={d.Id}>
+            <Typography>{d.Name}</Typography>
+            <Link href={phone}>{d.Phone_Number__c}</Link>
+        </ListItem>
     })
 
     return (
@@ -170,6 +192,9 @@ function FoodMap(){
                     </IconButton>
                 </div>
                 <Divider />
+                <List>
+                    {list_items}
+                </List>
             </Drawer>
             <main
                 className={clsx(classes.content, {
