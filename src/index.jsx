@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 // Leaflet Style and JS for React
 import 'leaflet/dist/leaflet.css';
 import marker_icon from 'leaflet/dist/images/marker-icon.png'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet'
 
 // React and MAterial - UI
 import clsx from 'clsx';
@@ -24,6 +24,11 @@ import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import Container from '@material-ui/core/Container';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 // Load And Parse Data
@@ -50,7 +55,6 @@ const telLinkRE = /[^\d]/g
 // https://material-ui.com/components/drawers/
 const useStyles = makeStyles((theme) => ({
   app: {
-    display: 'flex',
   },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
@@ -68,6 +72,9 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
   },
   hide: {
     display: 'none',
@@ -106,31 +113,34 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
+  title: {
+    marginLeft: theme.spacing(2),
+    flex: 1,
+  },
+  dialogContent: {
+    marginTop: '100px'  // TODO make this adapt to header height
+  }
 }));
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function FoodMap(){
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [data, setData] = React.useState([])
+    const [filters, setFilters] = React.useState({Service_Status__c:"Active"})
+    const [detail, setDetail] = React.useState(null);
 
     const handleDataLoaded = (data) => {
         setData(data)
     }
 
-    useEffect(() => {
-        if(data.length == 0){
-            axios.get(CSV_URL).then((response) => {
-                const locations = parse(
-                    response.data, 
-                    { columns: true,skip_empty_lines: true}
-                )
-                console.log(locations)
-                setData(locations)
-            })
-        }
-    })
+    const handleDetailClose = () => {
+        setDetail(null);
+    };
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -140,17 +150,48 @@ function FoodMap(){
         setOpen(false);
     }
 
-    const markers = data.map( (d) => {
+    // Effect to load our data
+    useEffect(() => {
+        if(data.length == 0){
+            axios.get(CSV_URL).then((response) => {
+                const locations = parse(
+                    response.data, 
+                    { columns: true,skip_empty_lines: true}
+                )
+                console.log(locations)
+                setData(locations)
+                window.data = locations
+            })
+        }
+    })
+
+
+    // Processed data
+    const filtered_list = data.filter((d) => {
+        for( var k in filters){
+            if( d[k] != filters[k]){ 
+                return false 
+            }
+        }
+        return true
+    })
+
+    // Generate visible markers
+    const markers = filtered_list.map( (d) => {
         const pos = [d.Geo_Location__Latitude__s,d.Geo_Location__Longitude__s];
         return <Marker key={d.Id} position={pos} icon={blueIcon}>
             <Popup>
-                {d.Agency__r__Name}<br/>
                 {d.Name}<br/>
+                {d.Physical_Address__c}, {d.Physical_City__c}<br/>
+                {d.Phone_Number__c}<br/>
+                <Button onClick={() => { setDetail(d) }} >Learn More</Button>
             </Popup>
         </Marker>
     })
 
-    const list_items = data.map( (d) => {
+    // Generate Drawer items
+    // NOT USED
+    const list_items = filtered_list.map( (d) => {
         const phone = `tel:${d.Phone_Number__c.replaceAll(telLinkRE,'')}`
         return <ListItem key={d.Id}>
             <Typography>{d.Name}</Typography>
@@ -158,6 +199,48 @@ function FoodMap(){
         </ListItem>
     })
 
+    const detailDialog = (detail != null)?(
+        <Dialog fullScreen open={detail != null} onClose={handleDetailClose} TransitionComponent={Transition}>
+            <AppBar className={classes.detailAppBar}>
+                <Toolbar>
+                <IconButton edge="start" color="inherit" onClick={handleDetailClose} aria-label="close">
+                    <CloseIcon />
+                </IconButton>
+                <Typography variant="h6" className={classes.title}>
+                    {detail.Name}
+                </Typography>
+                <Button autoFocus color="inherit" onClick={handleDetailClose}>
+                    close 
+                </Button>
+                </Toolbar>
+            </AppBar>
+            <Container className={classes.dialogContent}>
+                <Typography variant="h4">{detail.Full_Service_Name__c}</Typography>
+                <Typography variant="h6">Address</Typography>
+                <Typography>
+                    {detail.Physical_Address__c}<br/>
+                    {detail.Physical_City__c}, {detail.Physical_Zip__c}<br/>
+                    <Link href={"tel:"+detail.Phone_Number__c}>
+                        {detail.Phone_Number__c}
+                    </Link>
+                </Typography>
+                <Typography variant="h6">Description</Typography>
+                <Typography>
+                        {detail.Description__c}
+                </Typography>
+                <Typography variant="h6">Eligibility</Typography>
+                <Typography>
+                        {detail.Eligibility__c}
+                </Typography>
+                <Typography variant="h6">Hours of Operation</Typography>
+                <Typography>
+                        {detail.Hours_of_Operation__c}
+                </Typography>
+            </Container>
+        </Dialog>
+    ):null
+
+    // Return our fragment
     return (
         <React.Fragment>
             <CssBaseline />
@@ -172,9 +255,14 @@ function FoodMap(){
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" color="inherit" noWrap>
+                    <Typography variant="h6" color="inherit" noWrap className={classes.title}>
                         San Diego Food Map 
                     </Typography>
+                    <Button 
+                        href="https://github.com/opensandiego/sandiego-food-map" 
+                        color="inherit"
+                        target="_blank"
+                    >About</Button>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -193,7 +281,7 @@ function FoodMap(){
                 </div>
                 <Divider />
                 <List>
-                    {list_items}
+                    
                 </List>
             </Drawer>
             <main
@@ -208,6 +296,7 @@ function FoodMap(){
                     scrollWheelZoom={true}
                     className={ classes.map }
                 >
+                    <ZoomControl position="bottomleft" />
                     <TileLayer
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -215,6 +304,7 @@ function FoodMap(){
                     {markers}
                 </MapContainer>
             </main>
+            {detailDialog}
         </React.Fragment>
     )
 }
