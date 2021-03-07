@@ -12,26 +12,28 @@ import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leafl
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 // React and MAterial - UI
-import clsx from 'clsx';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
-import Drawer from '@material-ui/core/Drawer';
-import MenuIcon from '@material-ui/icons/Menu';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import CloseIcon from '@material-ui/icons/Close';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import DetailDialog from './components/DetailDialog.jsx';
+import Dialog from '@material-ui/core/Dialog';
 import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Link from '@material-ui/core/Link';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import CloseIcon from '@material-ui/icons/Close';
+import MenuIcon from '@material-ui/icons/Menu';
+import PopUpInfo from './components/PopUpInfo.jsx';
 import Slide from '@material-ui/core/Slide';
-import Container from '@material-ui/core/Container';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 // Load And Parse Data
@@ -125,9 +127,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 function FoodMap(){
     const classes = useStyles();
@@ -193,14 +192,7 @@ function FoodMap(){
     const marker_clusters = Object.entries(by_zip).map( zip_data => {
         const markers = zip_data[1].map( d => {
             const pos = [d.Geo_Location__Latitude__s,d.Geo_Location__Longitude__s];
-            const marker = <Marker key={d.Id} position={pos} icon={blueIcon}>
-                <Popup>
-                    {d.Name}<br/>
-                    {d.Physical_Address__c}, {d.Physical_City__c}<br/>
-                    {d.Phone_Number__c}<br/>
-                    <Button onClick={() => { setDetail(d) }} >Learn More</Button>
-                </Popup>
-            </Marker>
+             const marker = <PopUpInfo d={d} position={pos} icon={blueIcon} setDetail={setDetail}/>
             return marker
         })
         return <MarkerClusterGroup key={zip_data[0]}>
@@ -219,44 +211,7 @@ function FoodMap(){
     })
 
     const detailDialog = (detail != null)?(
-        <Dialog fullScreen open={detail != null} onClose={handleDetailClose} TransitionComponent={Transition}>
-            <AppBar className={classes.detailAppBar}>
-                <Toolbar>
-                <IconButton edge="start" color="inherit" onClick={handleDetailClose} aria-label="close">
-                    <CloseIcon />
-                </IconButton>
-                <Typography variant="h6" className={classes.title}>
-                    {detail.Name}
-                </Typography>
-                <Button autoFocus color="inherit" onClick={handleDetailClose}>
-                    close 
-                </Button>
-                </Toolbar>
-            </AppBar>
-            <Container className={classes.dialogContent}>
-                <Typography variant="h4">{detail.Full_Service_Name__c}</Typography>
-                <Typography variant="h6">Address</Typography>
-                <Typography>
-                    {detail.Physical_Address__c}<br/>
-                    {detail.Physical_City__c}, {detail.Physical_Zip__c}<br/>
-                    <Link href={"tel:"+detail.Phone_Number__c}>
-                        {detail.Phone_Number__c}
-                    </Link>
-                </Typography>
-                <Typography variant="h6">Description</Typography>
-                <Typography>
-                        {detail.Description__c}
-                </Typography>
-                <Typography variant="h6">Eligibility</Typography>
-                <Typography>
-                        {detail.Eligibility__c}
-                </Typography>
-                <Typography variant="h6">Hours of Operation</Typography>
-                <Typography>
-                        {detail.Hours_of_Operation__c}
-                </Typography>
-            </Container>
-        </Dialog>
+        <DetailDialog classes={classes} handleDetailClose={handleDetailClose} detail={detail}/>
     ):null
 
     // Return our fragment
