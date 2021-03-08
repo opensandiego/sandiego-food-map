@@ -8,7 +8,7 @@ import ReactDOM from "react-dom";
 import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import marker_icon from 'leaflet/dist/images/marker-icon.png'
-import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet'
+import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 // React and MAterial - UI
@@ -16,13 +16,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import CloseIcon from '@material-ui/icons/Close';
-import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import DetailDialog from './components/DetailDialog.jsx';
-import Dialog from '@material-ui/core/Dialog';
 import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
+import DrawerStyled from './components/DrawerStyled.jsx'
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
@@ -30,7 +27,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
 import PopUpInfo from './components/PopUpInfo.jsx';
-import Slide from '@material-ui/core/Slide';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
@@ -239,29 +235,9 @@ function FoodMap(){
                     >About</Button>
                 </Toolbar>
             </AppBar>
-            <Drawer
-                className={classes.drawer}
-                variant="persistent"
-                anchor="left"
-                open={open}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-                >
-                <div className={classes.drawerHeader}>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    <ListItem>
-                        <ListItemText>
-                        Filtering Coming Soon!
-                        </ListItemText>
-                    </ListItem> 
-                </List>
-            </Drawer>
+
+         <DrawerStyled open={open} handleDrawerClose={handleDrawerClose} theme={theme} classes={classes}/>
+
             <main
                 className={clsx(classes.content, {
                     [classes.contentShift]: open,
