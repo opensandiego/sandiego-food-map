@@ -14,17 +14,12 @@ import MarkerClusterGroup from 'react-leaflet-markercluster';
 // React and MAterial - UI
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import DetailDialog from './components/DetailDialog.jsx';
-import Divider from '@material-ui/core/Divider';
 import DrawerStyled from './components/DrawerStyled.jsx'
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
 import PopUpInfo from './components/PopUpInfo.jsx';
 import Toolbar from '@material-ui/core/Toolbar';
