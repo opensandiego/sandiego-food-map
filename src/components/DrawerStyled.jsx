@@ -16,8 +16,6 @@ import { withStyles, useTheme, makeStyles, withTheme } from "@material-ui/core/s
 // const DRAWER_WIDTH = 240;
 
 // const styles = {
-
-// //const styles = makeStyles(theme => ({
 //   drawer: {
 //     width: DRAWER_WIDTH,
 //     flexShrink: 0,
@@ -34,7 +32,7 @@ import { withStyles, useTheme, makeStyles, withTheme } from "@material-ui/core/s
 //     justifyContent: "flex-end",
 //   }}
 
-//}))
+
 
 const DrawerStyled = ({ classes, open, handleDrawerClose, theme }) => {
 //const theme = useTheme();

@@ -47,6 +47,5 @@ describe('DetailDialog', ()=> {
         expect(wrapper.someWhere((n) =>
             n.text().includes(detail.Description__c) 
         )).toBe(true);
-        
     })
 })
