@@ -3,7 +3,8 @@ import { Marker, Popup } from "react-leaflet";
 import Button from '@material-ui/core/Button';
 
 const PopUpInfo = ({ d, position, icon, setDetail }) => 
-   (
+{
+  return (
   <Marker key={d.Id} position={position} icon={icon}>
     <Popup>
         test
@@ -23,5 +24,6 @@ const PopUpInfo = ({ d, position, icon, setDetail }) =>
     </Popup>
   </Marker>
     );
+};
 
 export default PopUpInfo;

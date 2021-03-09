@@ -44,9 +44,9 @@ return (
     variant="persistent"
     anchor="left"
     open={open}
-    // classes={{
-    //   paper: classes.drawerPaper,
-    // }}
+    classes={{
+      paper: classes.drawerPaper,
+    }}
   >
     <div className={classes.drawerHeader}>
       <IconButton onClick={handleDrawerClose}>

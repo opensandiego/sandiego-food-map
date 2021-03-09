@@ -25,7 +25,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
-const DetailDialog = ({handleDetailClose, detail, classes}) => (
+const DetailDialog = ({handleDetailClose, detail, classes}) => 
+{
+return (
 <Dialog fullScreen open={true} onClose={handleDetailClose} TransitionComponent={Transition}>
 <AppBar className={classes.detailAppBar}>
     <Toolbar>
@@ -64,6 +66,7 @@ const DetailDialog = ({handleDetailClose, detail, classes}) => (
     </Typography>
 </Container>
 </Dialog>);
+};
 
 
 
