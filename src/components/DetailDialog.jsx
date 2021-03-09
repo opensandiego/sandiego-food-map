@@ -17,7 +17,6 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = {
   title: {  
     flexGrow: 1,
-    color: 'green',
 },
 }
 
@@ -34,7 +33,7 @@ return (
     <IconButton edge="start" color="inherit" onClick={handleDetailClose} aria-label="close">
         <CloseIcon />
     </IconButton>
-    <Typography variant="h6" className={styles.title}>
+    <Typography variant="h6" className={classes.title}>
         {detail.Name}
     </Typography>
     <Button autoFocus color="inherit" onClick={handleDetailClose}>
