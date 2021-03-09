@@ -231,7 +231,7 @@ function FoodMap(){
                 </Toolbar>
             </AppBar>
 
-         <DrawerStyled open={open} handleDrawerClose={handleDrawerClose} theme={theme} classes={classes}/>
+        <DrawerStyled open={open} handleDrawerClose={handleDrawerClose} theme={theme} classes={classes}/>
 
             <main
                 className={clsx(classes.content, {

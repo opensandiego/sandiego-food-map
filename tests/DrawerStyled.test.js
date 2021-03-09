@@ -7,12 +7,9 @@ import Drawer from "@material-ui/core/Drawer";
 
 Enzyme.configure({ adapter: new Adapter()})
 
-// const [detail, setDetail] = React.useState(null);
-
 //Enzymes shallow function allows us to render React components when object in memory instead of the dom, which makes it faster. 
 //It wraps that object in a wrapper, that gives us functions to easily examine the rendered component. 
 const setUp = () => {
-    //const component = shallow(<PopUpInfo d={{}} position={{}} icon={{}} setDetail={()=> {{}}}/>)
     const component = shallow(<DrawerStyled open={true} handleDrawerClose={{}} theme={{}} classes={{}} />)
 
     return component;
