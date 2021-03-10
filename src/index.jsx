@@ -8,7 +8,7 @@ import ReactDOM from "react-dom";
 import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import marker_icon from 'leaflet/dist/images/marker-icon.png'
-import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet'
+import { MapContainer, TileLayer, ZoomControl, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 // React and MAterial - UI
@@ -26,14 +26,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import  usZips from 'us-zips';
 
 // Load And Parse Data
 import parse from 'csv-parse/lib/sync';
 import axios from 'axios';
+import {  TextField } from '@material-ui/core';
 
 
 // Constants
-const SAN_DIEGO_CENTER = [32.8546305,-117.051348]
+//const SAN_DIEGO_CENTER = zoom
 const SAN_DIEGO_ZOOM = 10
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/1PACX-1vTSnF1wYkCiAbHAqhs_WG2i0EjVh5JPRTAp5pQW-9b_52TsYuaEOzNgz8EbFEGO6JB1o2Okd4QWRAWR/pub?output=csv"
 const DRAWER_WIDTH = 240;
@@ -126,6 +128,10 @@ function FoodMap(){
     const [data, setData] = React.useState([])
     const [filters, setFilters] = React.useState({Service_Status__c:"Active"})
     const [detail, setDetail] = React.useState(null);
+    const [search, setSearch] = React.useState('92120')
+    //const [centerZoom, setCenterZoom] = React.useState([32.8546305,-117.051348])
+    const [centerZoom, setCenterZoom] = React.useState([32.8546305,-118.051348])
+
 
     const handleDataLoaded = (data) => {
         setData(data)
@@ -141,6 +147,24 @@ function FoodMap(){
 
     const handleDrawerClose = () => {
         setOpen(false);
+    }
+
+    const handleZipChange = (e) => {
+      //target.value is vanilla javascript. target is native, part of the dom tree. That specific input field, 
+      //we get its value.
+      setSearch(e.target.value)
+    }
+
+    const handleClick = () => {
+     //const filteredResult = data.filter((searchvalues)=>{
+       // return searchvalues.Physical_Zip_Code__c === search;
+      //  console.log(usZips['54301'])
+      //})
+      
+      const zip = usZips[search]
+      console.log(zip.latitude, zip.longitude)
+      setCenterZoom([zip.latitude, zip.longitude]);
+      //console.log(filteredResult)
     }
 
     // Effect to load our data
@@ -228,6 +252,8 @@ function FoodMap(){
                         color="inherit"
                         target="_blank"
                     >About</Button>
+                    <TextField onChange={handleZipChange} label='Search For ZipCode' name='search'/> 
+                    <Button onClick={handleClick}> Search </Button>
                 </Toolbar>
             </AppBar>
 
@@ -240,7 +266,7 @@ function FoodMap(){
             >
                 <div className={classes.drawerHeader} />
                 <MapContainer 
-                    center={SAN_DIEGO_CENTER} 
+                    center={centerZoom} 
                     zoom={SAN_DIEGO_ZOOM} 
                     scrollWheelZoom={true}
                     className={ classes.map }
