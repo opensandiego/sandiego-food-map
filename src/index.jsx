@@ -75,30 +75,14 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  buttonAndSearchBarContainer:{
-  //width: '50%',
-   //alignItems: 'center',
-   //justifyContent: 'center',
-   //flexWrap: 'wrap',
+ searchButton:{
    marginTop: '1vw',
    marginBottom: '1vw',
-   //marginRight: theme.spacing(10),
    marginRight: '10%',
-
   },
   addressSearchBar: {
     color: 'white',
     width: '50%',
-    // marginTop: '1vw',
-    // marginBottom: '1vw',
-  },
- 
-  searchButton:{
-  paddingTop: '100vw',
-  color:'white',
-  marginTop: '10vw',
-  marginLeft: '50%',
-  marginRight: theme.spacing(10),
   },
   title: {
     flexGrow: 1,
@@ -271,31 +255,24 @@ function FoodMap() {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
+            className={clsx(classes.menuButton, open && classes.hide)}          >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" color="inherit" noWrap className={classes.title}>
             San Diego Food Map
                     </Typography>
-    {/* <Box justifyContent="center"  alignItems="center" className={classes.buttonAndSearchBarContainer}> */}
 
       <TextField
         className={classes.addressSearchBar}
         placeholder="look up an address"
-        // variant='filled'
         color="inherit"
         onChange={handleZipChange} 
-
         name='search' 
       />
-      <Button startIcon={<SearchIcon  />}  color="inherit" onClick={handleClick} 
-     // classname={classes.searchButton}
-     className={classes.buttonAndSearchBarContainer}
+      <Button startIcon={<SearchIcon  />}  color="inherit" onClick={handleClick} className={classes.searchButton}
       >  
             Search
            </Button> 
-    {/* </Box> */}
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"
