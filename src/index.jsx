@@ -15,15 +15,14 @@ import MarkerClusterGroup from 'react-leaflet-markercluster';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import DetailDialog from './components/DetailDialog.jsx';
 import DrawerStyled from './components/DrawerStyled.jsx'
 import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
 import MenuIcon from '@material-ui/icons/Menu';
-import PlaceIcon from '@material-ui/icons/Place';
+import SearchIcon from '@material-ui/icons/Search';
 import PopUpInfo from './components/PopUpInfo.jsx';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -77,18 +76,29 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   buttonAndSearchBarContainer:{
-  width: '50%',
-   //paddingRight: '30%',
-   alignItems: 'center',
+  //width: '50%',
+   //alignItems: 'center',
+   //justifyContent: 'center',
+   //flexWrap: 'wrap',
+   marginTop: '1vw',
+   marginBottom: '1vw',
+   //marginRight: theme.spacing(10),
+   marginRight: '10%',
+
   },
   addressSearchBar: {
     color: 'white',
     width: '50%',
-    marginTop: '1vw',
+    // marginTop: '1vw',
+    // marginBottom: '1vw',
   },
  
   searchButton:{
-    
+  paddingTop: '100vw',
+  color:'white',
+  marginTop: '10vw',
+  marginLeft: '50%',
+  marginRight: theme.spacing(10),
   },
   title: {
     flexGrow: 1,
@@ -268,25 +278,24 @@ function FoodMap() {
           <Typography variant="h6" color="inherit" noWrap className={classes.title}>
             San Diego Food Map
                     </Typography>
-                    <Container  className={classes.buttonAndSearchBarContainer}>
+    {/* <Box justifyContent="center"  alignItems="center" className={classes.buttonAndSearchBarContainer}> */}
+
       <TextField
         className={classes.addressSearchBar}
         placeholder="look up an address"
-        variant='filled'
-        color='primary'
+        // variant='filled'
+        color="inherit"
         onChange={handleZipChange} 
-        // label='Search For ZipCode' 
+
         name='search' 
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start"  color='primary'>
-              <PlaceIcon color='inherit'/>
-            </InputAdornment>
-          ),
-        }}
       />
-    <Button color="inherit"  className={classes.searchButton} onClick={handleClick}> Search </Button>
-    </Container>
+      <Button startIcon={<SearchIcon  />}  color="inherit" onClick={handleClick} 
+     // classname={classes.searchButton}
+     className={classes.buttonAndSearchBarContainer}
+      >  
+            Search
+           </Button> 
+    {/* </Box> */}
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"
