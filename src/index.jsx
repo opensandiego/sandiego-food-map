@@ -8,7 +8,7 @@ import ReactDOM from "react-dom";
 import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import marker_icon from 'leaflet/dist/images/marker-icon.png'
-import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet'
+import { MapContainer, TileLayer, ZoomControl, useMapEvents } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 // React and MAterial - UI
@@ -142,6 +142,7 @@ function FoodMap() {
   const [filters, setFilters] = React.useState({ Service_Status__c: "Active" })
   const [detail, setDetail] = React.useState(null);
   const [search, setSearch] = React.useState('92120')
+  const [position, setPosition] = React.useState(null)
   //const [centerZoom, setCenterZoom] = React.useState([32.8546305,-117.051348])
   const [centerZoom, setCenterZoom] = React.useState([32.8546305, -117.051348])
 
@@ -169,16 +170,17 @@ function FoodMap() {
   }
 
   const handleClick = () => {
-    //const filteredResult = data.filter((searchvalues)=>{
-    // return searchvalues.Physical_Zip_Code__c === search;
-    //  console.log(usZips['54301'])
-    //})
+    const filteredResult = data.filter((searchvalues)=>{
+    return searchvalues.Physical_Address__c === search;
+    // console.log(usZips['54301'])
+    console.log(search)
+    })
 
-    const zip = usZips[search]
-    console.log(zip.latitude, zip.longitude)
+    //const zip = usZips[search]
+   // console.log(zip.latitude, zip.longitude)
     //setCenterZoom([zip.latitude, zip.longitude]);
-    setCenterZoom([zip.Geo_Location__Latitude__s, zip.Geo_Location__Longitude__s])
-    //console.log(filteredResult)
+   setCenterZoom([filteredResult[0].Geo_Location__Latitude__s, filteredResult[0].Geo_Location__Longitude__s])
+  console.log(filteredResult[0].Geo_Location__Latitude__s, filteredResult[0].Geo_Location__Longitude__s)
   }
 
   // Effect to load our data
@@ -229,6 +231,26 @@ function FoodMap() {
     </MarkerClusterGroup>
   })
 
+ 
+  function LocationMarker() {
+   // const [position, setPosition] = useState(null)
+    const map = useMapEvents({
+      click() {
+        map.locate()
+      },
+      locationfound(e) {
+        setPosition(e.latlng)
+        map.flyTo(e.latlng, map.getZoom())
+      },
+    })
+  
+    return position === null ? null : (
+      <Marker position={position}>
+        <Popup>You are here</Popup>
+      </Marker>
+    )
+  }
+
   // Generate Drawer items
   // NOT USED
   const list_items = filtered_list.map((d) => {
@@ -273,6 +295,7 @@ function FoodMap() {
       >  
             Search
            </Button> 
+
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"
@@ -298,6 +321,7 @@ function FoodMap() {
         >
 
           <ZoomControl position="bottomleft" />
+          <LocationMarker />
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
