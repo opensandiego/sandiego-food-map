@@ -8,14 +8,13 @@ import ReactDOM from "react-dom";
 import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import marker_icon from 'leaflet/dist/images/marker-icon.png'
-import { MapContainer, TileLayer, ZoomControl, useMapEvents } from 'react-leaflet'
+import { MapContainer, TileLayer, ZoomControl, useMapEvent, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 // React and MAterial - UI
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box';
 import DetailDialog from './components/DetailDialog.jsx';
 import DrawerStyled from './components/DrawerStyled.jsx'
 import IconButton from '@material-ui/core/IconButton';
@@ -39,7 +38,7 @@ import axios from 'axios';
 
 
 // Constants
-//const SAN_DIEGO_CENTER = zoom
+const SAN_DIEGO_CENTER = [32.8546305, -117.051348]
 const SAN_DIEGO_ZOOM = 10
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/1PACX-1vTSnF1wYkCiAbHAqhs_WG2i0EjVh5JPRTAp5pQW-9b_52TsYuaEOzNgz8EbFEGO6JB1o2Okd4QWRAWR/pub?output=csv"
 const DRAWER_WIDTH = 240;
@@ -133,6 +132,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function MyMap() {
+  const map = useMap()
+  console.log('map center:', map.getCenter())
+  return null
+}
+
+function MyComponent(props) {
+  const map = useMap()
+  console.log(props.center, "position props.center")
+  map.setView(props.center, 13);
+  return null
+}
 
 function FoodMap() {
   const classes = useStyles();
@@ -141,11 +152,10 @@ function FoodMap() {
   const [data, setData] = React.useState([])
   const [filters, setFilters] = React.useState({ Service_Status__c: "Active" })
   const [detail, setDetail] = React.useState(null);
-  const [search, setSearch] = React.useState('92120')
-  const [position, setPosition] = React.useState(null)
+  const [search, setSearch] = React.useState([32.8546305, -117.051348])
   //const [centerZoom, setCenterZoom] = React.useState([32.8546305,-117.051348])
   const [centerZoom, setCenterZoom] = React.useState([32.8546305, -117.051348])
-
+  const [position, setPosition] = React.useState(SAN_DIEGO_CENTER)
 
   const handleDataLoaded = (data) => {
     setData(data)
@@ -164,23 +174,14 @@ function FoodMap() {
   }
 
   const handleZipChange = (e) => {
-    //target.value is vanilla javascript. target is native, part of the dom tree. That specific input field, 
-    //we get its value.
     setSearch(e.target.value)
   }
 
-  const handleClick = () => {
-    const filteredResult = data.filter((searchvalues)=>{
-    return searchvalues.Physical_Address__c === search;
-    // console.log(usZips['54301'])
-    console.log(search)
-    })
 
-    //const zip = usZips[search]
-   // console.log(zip.latitude, zip.longitude)
-    //setCenterZoom([zip.latitude, zip.longitude]);
-   setCenterZoom([filteredResult[0].Geo_Location__Latitude__s, filteredResult[0].Geo_Location__Longitude__s])
-  console.log(filteredResult[0].Geo_Location__Latitude__s, filteredResult[0].Geo_Location__Longitude__s)
+  const handleClick = () => {
+    const zip = usZips[search]
+    console.log(zip.latitude, zip.longitude)
+    setPosition([zip.latitude, zip.longitude]);
   }
 
   // Effect to load our data
@@ -217,7 +218,7 @@ function FoodMap() {
     by_zip[d.Physical_Zip_Code__c].push(d);
     return by_zip;
   }, {})
-
+ 
   window.by_zip = by_zip
   // Then generate marker clusters
   const marker_clusters = Object.entries(by_zip).map(zip_data => {
@@ -231,9 +232,7 @@ function FoodMap() {
     </MarkerClusterGroup>
   })
 
- 
-  function LocationMarker() {
-   // const [position, setPosition] = useState(null)
+  const locationMarker = () => {
     const map = useMapEvents({
       click() {
         map.locate()
@@ -295,7 +294,6 @@ function FoodMap() {
       >  
             Search
            </Button> 
-
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"
@@ -319,13 +317,15 @@ function FoodMap() {
           scrollWheelZoom={true}
           className={classes.map}
         >
+          <MyMap/>
+          <MyComponent center={position} />
 
           <ZoomControl position="bottomleft" />
-          <LocationMarker />
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          {locationMarker}
 
           {marker_clusters}
         </MapContainer>
