@@ -27,7 +27,7 @@ import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import { makeStyles, useTheme, withTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import usZips from 'us-zips';
 
 
@@ -39,7 +39,7 @@ import axios from 'axios';
 
 // Constants
 const SAN_DIEGO_CENTER = [32.8546305, -117.051348]
-const SAN_DIEGO_ZOOM = 10
+const SAN_DIEGO_ZOOM = 15
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/1PACX-1vTSnF1wYkCiAbHAqhs_WG2i0EjVh5JPRTAp5pQW-9b_52TsYuaEOzNgz8EbFEGO6JB1o2Okd4QWRAWR/pub?output=csv"
 const DRAWER_WIDTH = 240;
 
@@ -132,16 +132,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function MyMap() {
-  const map = useMap()
-  console.log('map center:', map.getCenter())
-  return null
-}
-
 function MyComponent(props) {
   const map = useMap()
   console.log(props.center, "position props.center")
-  map.setView(props.center, 13);
+  map.setView(props.center, 10);
   return null
 }
 
@@ -153,7 +147,6 @@ function FoodMap() {
   const [filters, setFilters] = React.useState({ Service_Status__c: "Active" })
   const [detail, setDetail] = React.useState(null);
   const [search, setSearch] = React.useState([32.8546305, -117.051348])
-  //const [centerZoom, setCenterZoom] = React.useState([32.8546305,-117.051348])
   const [centerZoom, setCenterZoom] = React.useState([32.8546305, -117.051348])
   const [position, setPosition] = React.useState(SAN_DIEGO_CENTER)
 
@@ -232,23 +225,6 @@ function FoodMap() {
     </MarkerClusterGroup>
   })
 
-  const locationMarker = () => {
-    const map = useMapEvents({
-      click() {
-        map.locate()
-      },
-      locationfound(e) {
-        setPosition(e.latlng)
-        map.flyTo(e.latlng, map.getZoom())
-      },
-    })
-  
-    return position === null ? null : (
-      <Marker position={position}>
-        <Popup>You are here</Popup>
-      </Marker>
-    )
-  }
 
   // Generate Drawer items
   // NOT USED
@@ -317,7 +293,6 @@ function FoodMap() {
           scrollWheelZoom={true}
           className={classes.map}
         >
-          <MyMap/>
           <MyComponent center={position} />
 
           <ZoomControl position="bottomleft" />
@@ -325,8 +300,6 @@ function FoodMap() {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {locationMarker}
-
           {marker_clusters}
         </MapContainer>
       </main>
