@@ -12,21 +12,23 @@ Project team members meet during the regularly Open San Diego project nights. Se
 # Code Submissions 
 Once you volunteer to work on an issue assign yourself to the issue or ask someone to assign you to the issue.  Read the issue and request clarification of the issue, and desired outcome with Project leads. 
 ## Fork the Repository
-Goto GitHub and `fork` the https://github.com/opensandiego/sandiego-food-map/  project
+Login to your GitHub account, if you have not done so already, requested access to the project repository so that you can contribute to it.   Once access has been provied to your account create a  `fork` of the https://github.com/opensandiego/sandiego-food-map/ project using GitHub's UI.
 
 ## Clone Repository
-`clone` the forked git repository to your local development system.
+
+**Note:** These steps assume Command Line usage, different development tools steps may be different, but the process flow should be similar.
+
+After successfully forking the repository, clone the forked repository to your local development system, `git clone <GitHub repository>`.  The GitHub repository will be cloned to your local development system and its initial branch should be named *master*.  Use `git status` to display current branch you are on.
 
 ## Branches
-If you are working on a need to keep your changes seperate from other work, it is best
-to create a branch, as follows `git branch <branch name> master`.  Checkout your branch, `git checkout <branch name> and make your changes on your branch.
+If you need to keep your changes seperate from other ongoing work, it is best to create a branch, as follows `git branch <your branch name> master`.  Checkout your branch, `git checkout <branch name>` and make your changes on your branch.
 ## Commits
-Make your changes using your favorite editor, and then `commit` the changes to your local branch.  Make sure to add a meaningful commit message to your commit.
+Make your changes using your favorite editor, and then `commit` the changes to your local branch, `git commit`, you will be prompted to enter a commit comment, ensure it is meaningful to your commit.
 
 ## Merge
-Once your change has been completed and committed successful on your branch.  Swtich to the master by checking out the master, `git checkout master`.  Merge your changes into the master, `git merge <branch name>`.
+Once your change has been completed and committed successful on your branch.  Swtich to the *master* branch by checking out the master branch, `git checkout master`.  Merge your changes into the master, `git merge <your branch name>`.
 ## Push Commits
-Once you are ready, `push` the commit to the `remote` repository on GitHub.
+Once you are ready, `push` the commit to the repository on GitHub, using `git push origin master`.  *origin* is the label of the GitHub repository, you can list the remote repositories it points to using `git remote -v`
 
    ## Pull Requests
 Create a `Pull Request` on the upstream repository, (the one your forked).  Enter any required information and link to project issue.
