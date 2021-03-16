@@ -17,8 +17,12 @@ Goto GitHub and `fork` the https://github.com/opensandiego/sandiego-food-map/  p
 ## Clone Repository
 `clone` the forked git repository to your local development system.
 
+## Branches
+If you are working on a need to keep your changes seperate from other work, it is best
+to create a branch, as follows `git branch <branch name> master`.  Checkout your branch, `git checkout <branch name>
+and make your changes on your branch.
 ## Commits
-Make your changes using your favorite editor, `commit` the changes to your local repository.  Make sure to `tag` your commit so that it can be easily understood what is the reason for the commit.
+Make your changes using your favorite editor, and then `commit` the changes to your local branch.  Make sure to `tag` your commit so that it can be easily understood what is the reason for the commit.
 
 ## Push Commits
 Once you are ready, `push` the commit to the `remote` repository on GitHub.
