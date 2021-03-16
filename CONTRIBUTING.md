@@ -19,11 +19,12 @@ Goto GitHub and `fork` the https://github.com/opensandiego/sandiego-food-map/  p
 
 ## Branches
 If you are working on a need to keep your changes seperate from other work, it is best
-to create a branch, as follows `git branch <branch name> master`.  Checkout your branch, `git checkout <branch name>
-and make your changes on your branch.
+to create a branch, as follows `git branch <branch name> master`.  Checkout your branch, `git checkout <branch name> and make your changes on your branch.
 ## Commits
-Make your changes using your favorite editor, and then `commit` the changes to your local branch.  Make sure to `tag` your commit so that it can be easily understood what is the reason for the commit.
+Make your changes using your favorite editor, and then `commit` the changes to your local branch.  Make sure to add a meaningful commit message to your commit.
 
+## Merge
+Once your change has been completed and committed successful on your branch.  Swtich to the master by checking out the master, `git checkout master`.  Merge your changes into the master, `git merge <branch name>`.
 ## Push Commits
 Once you are ready, `push` the commit to the `remote` repository on GitHub.
 
