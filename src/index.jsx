@@ -74,10 +74,10 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
- searchButton:{
-   marginTop: '1vw',
-   marginBottom: '1vw',
-   marginRight: '10%',
+  searchButton: {
+    marginTop: '1vw',
+    marginBottom: '1vw',
+    marginRight: '10%',
   },
   addressSearchBar: {
     color: 'white',
@@ -132,10 +132,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function MyComponent(props) {
+function ZoomComponent(props) {
   const map = useMap()
   console.log(props.center, "position props.center")
-  map.setView(props.center, 10);
+  map.setView(props.center, SAN_DIEGO_ZOOM);
   return null
 }
 
@@ -170,12 +170,25 @@ function FoodMap() {
     setSearch(e.target.value)
   }
 
-
   const handleClick = () => {
     const zip = usZips[search]
     console.log(zip.latitude, zip.longitude)
     setPosition([zip.latitude, zip.longitude]);
   }
+
+
+fetch('https://nominatim.openstreetmap.org/search?q=135+alvarado+street+california&format=xml&polygon_geojson=1&addressdetails=1')
+      .then(res => {
+        if (res.ok){
+          console.log("Yeah, successfull API fetch")
+          console.log(res, "res")
+          return response
+        } else {
+          console.log("Not successful")
+        }
+      })
+      .then(data => console.log(data, "data second then"))
+      .catch(error => console.log(error))
 
   // Effect to load our data
   useEffect(() => {
@@ -211,7 +224,7 @@ function FoodMap() {
     by_zip[d.Physical_Zip_Code__c].push(d);
     return by_zip;
   }, {})
- 
+
   window.by_zip = by_zip
   // Then generate marker clusters
   const marker_clusters = Object.entries(by_zip).map(zip_data => {
@@ -259,23 +272,22 @@ function FoodMap() {
             San Diego Food Map
                     </Typography>
 
-      <TextField
-        className={classes.addressSearchBar}
-        placeholder="look up an address"
-        color="inherit"
-        onChange={handleZipChange} 
-        name='search' 
-      />
-      <Button startIcon={<SearchIcon  />}  color="inherit" onClick={handleClick} className={classes.searchButton}
-      >  
+          <TextField
+            className={classes.addressSearchBar}
+            placeholder="look up an address"
+            color="inherit"
+            onChange={handleZipChange}
+            name='search'
+          />
+          <Button startIcon={<SearchIcon />} color="inherit" onClick={handleClick} className={classes.searchButton}
+          >
             Search
-           </Button> 
+           </Button>
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"
             target="_blank"
           >About</Button>
-
         </Toolbar>
       </AppBar>
 
@@ -293,7 +305,7 @@ function FoodMap() {
           scrollWheelZoom={true}
           className={classes.map}
         >
-          <MyComponent center={position} />
+          <ZoomComponent center={position} />
 
           <ZoomControl position="bottomleft" />
           <TileLayer
