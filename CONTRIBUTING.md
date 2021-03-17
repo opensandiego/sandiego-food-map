@@ -31,9 +31,9 @@ Once your change has been completed and committed successful on your branch.  Sw
 Once you are ready, `push` the commit to the remote repository on GitHub, `git push origin master`.  *origin* is the label of the remote GitHub repository, you can list the remote repositoriespointed by *origin*, using `git remomte -v`
 
    ## Pull Requests
-Create a `Pull Request` (PR) on the upstream repository https://github.com/opensandiego/sandiego-food-map.  Enter any required information, link project issue resolved by the PR, and submit PR.
+On GitHub create a new `Pull Request` (PR) on the upstream repository https://github.com/opensandiego/sandiego-food-map.  Select the `new pull request` button, use the **compare across forks** link. Select the drop down base repository: **opensandiego/sandiego-food-map**, base: **master**, and your head repository: **your forked repository name**, compare: **master** in most cases.  Select `create pull request`, and you should be presented with a check mark with a message "Able to merge.  These branches can be automatically merged." 
 
-Pull Request will be reviewed, feedback may be provide, and changes requested.  After feedback or changes have been made, PR can be resubmitted, for review and accepted.
+Pull Request may be reviewed, feedback may be provide, and changes requested.  After feedback or changes have been made, PR can be resubmitted, for review and accepted.
 
    ## Update Fork
    Refresh your forked repository to contain any changes from other pull requests.
