@@ -307,7 +307,7 @@ fetch('https://nominatim.openstreetmap.org/search?q=135+alvarado+street+californ
         >
           <ZoomComponent center={position} />
 
-          <ZoomControl position="bottomleft" />
+          <ZoomControl position="bottomright" />
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
