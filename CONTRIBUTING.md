@@ -10,7 +10,7 @@ Project team members meet during the regularly Open San Diego project nights. Se
 
 
 # Code Submissions 
-Once you volunteer to work on an issue assign yourself to the issue or ask someone to assign you to the issue.  Read the issue and request clarification of the issue, and desired outcome with Project leads. 
+Once you volunteer to work on an issue assign yourself to the issue or ask a Project Lead to assign you to the issue.  Read the issue, request clarification of the issue, and desired outcome with Project leads. 
 ## Fork the Repository
 Login to your GitHub account, if you have not done so already, requested access to the project repository so that you can contribute to it.   Once access has been provied to your account create a  `fork` of the https://github.com/opensandiego/sandiego-food-map/ project using GitHub's UI.
 
@@ -31,18 +31,15 @@ Once your change has been completed and committed successful on your branch.  Sw
 Once you are ready, `push` the commit to the repository on GitHub, using `git push origin master`.  *origin* is the label of the GitHub repository, you can list the remote repositories it points to using `git remote -v`
 
    ## Pull Requests
-Create a `Pull Request` on the upstream repository, (the one your forked).  Enter any required information and link to project issue.
-
-Pull request will be review, feedback may be provide, after feedback/changes, pull request will be accepeted.
+Create a `Pull Request` (PR) on the upstream repository https://github.com/opensandiego/sandiego-food-map.  Enter any required information, link project issue resolved by the PR, and submit PR.  The PR will be reviewed, feedback may be provide, and additional changes requested.  After feedback or changes have been made, PR may be re-submitted, for review and acceptance.
 
    ## Update Fork
-   Refresh your forked repository to contain any changes from other pull requests.
-
-**Note: See https://guides.github.com/activities/forking/ 
+Refresh your forked repository to contain any changes from other pull requests.
 
 ## Future
 * Cypress.io - Integration of Testing Framework
 * GitHub Actions - CI/CD to automate testing against browsers, and devices
+* Docker - Containerizing development 
 ## Contact
 
 Virtually during weekly Open San Diego meeting hosted on Discord.  On an Adhoc basis using Slack. An active Slack link can be found on our website:
