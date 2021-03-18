@@ -190,14 +190,15 @@ function FoodMap() {
         }
       })
       .then(data => {
-        if (data[0] == !undefined) {
+        console.log(data, "data")
+        if (data[0]) {
           { setPosition([data[0].lat, data[0].lon]) };
         }
         else {
+          console.log("BBBBBBBBBBBBBBAAAAAAAAAAADDDDDDDDDDD")
           setOpenButton(true);
         }
       })
-      // console.log(data[0].lon, data[0].lat, "data second then")})
       .catch(error => console.log(error))
   }
 
