@@ -3,7 +3,7 @@
 # Use Dockerfile.lambda to package/upload (see the instructions in the Dockerfile)
 # 
 import json,os
-import boto3,botocore
+import boto3, botocore
 
 # TODO setup sentry and add to AWS Lambda Env 
 if "SENTRY_DSN" in os.environ:
@@ -15,11 +15,11 @@ if "SENTRY_DSN" in os.environ:
     )
 
 def lambda_handler(event, context, local_output=False):
-    # ALWAYs store token in env, not in code!
+    # ALWAYS store token in env, not in code!
     salesforce_token = os.environ.get("SALESFORCE_TOKEN",None)
 
     if salesforce_token:
-        pass #TODO query salesforce
+        pass # TODO query salesforce
     else: 
         data = json.loads(open("data/211sample.json").read())
 
@@ -44,4 +44,4 @@ def lambda_handler(event, context, local_output=False):
         )
 
 if __name__ == "__main__":
-    lambda_handler(None,None,local_output=True)
+    lambda_handler(None, None, local_output=True)
