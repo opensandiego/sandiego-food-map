@@ -38,7 +38,6 @@ import axios from 'axios';
 
 // Constants
 const SAN_DIEGO_CENTER = [32.8546305, -117.051348]
-const SAN_DIEGO_ZOOM = 15
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/1PACX-1vTSnF1wYkCiAbHAqhs_WG2i0EjVh5JPRTAp5pQW-9b_52TsYuaEOzNgz8EbFEGO6JB1o2Okd4QWRAWR/pub?output=csv"
 const DRAWER_WIDTH = 240;
 
@@ -131,14 +130,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function ZoomComponent(props) {
-  const map = useMap()
-  console.log(props.center, "position props.center")
-  map.setView(props.center, SAN_DIEGO_ZOOM);
-  return null
-}
-
-
 
 function FoodMap() {
   const classes = useStyles();
@@ -148,7 +139,7 @@ function FoodMap() {
   const [filters, setFilters] = React.useState({ Service_Status__c: "Active" })
   const [detail, setDetail] = React.useState(null);
   const [search, setSearch] = React.useState([32.8546305, -117.051348])
-  const [centerZoom, setCenterZoom] = React.useState([32.8546305, -117.051348])
+  const [centerZoom, setCenterZoom] = React.useState(10)
   const [position, setPosition] = React.useState(SAN_DIEGO_CENTER)
   const [openButton, setOpenButton] = React.useState(false);
 
@@ -159,10 +150,6 @@ function FoodMap() {
   const handleDetailClose = () => {
     setDetail(null);
   };
-
-  // const handleButtonClickOpen = () => {
-  //   setOpen(true);
-  // };
 
   const handleClose = () => {
     setOpenButton(false);
@@ -180,6 +167,14 @@ function FoodMap() {
     setSearch(e.target.value)
   }
 
+  
+function ZoomComponent(props) {
+  const map = useMap()
+  console.log(props.center, "position props.center")
+  map.setView(props.center, centerZoom);
+  return null
+}
+
   const handleClick = () => {
     fetch(`https://nominatim.openstreetmap.org/search?q=${search}&viewbox=-119.39075%2C33.51674%2C-116.28162%2C32.54735&bounded=1&format=jsonv2`)
       .then(res => {
@@ -190,20 +185,15 @@ function FoodMap() {
         }
       })
       .then(data => {
-        console.log(data, "data")
         if (data[0]) {
-          { setPosition([data[0].lat, data[0].lon]) };
+          { setPosition([data[0].lat, data[0].lon]), setCenterZoom(15) };
         }
         else {
-          console.log("BBBBBBBBBBBBBBAAAAAAAAAAADDDDDDDDDDD")
           setOpenButton(true);
         }
       })
       .catch(error => console.log(error))
   }
-
-
-
 
   // Effect to load our data
   useEffect(() => {
@@ -318,8 +308,8 @@ function FoodMap() {
       >
         <div className={classes.drawerHeader} />
         <MapContainer
-          center={centerZoom}
-          zoom={SAN_DIEGO_ZOOM}
+          center={SAN_DIEGO_CENTER}
+          zoom={10}
           scrollWheelZoom={true}
           className={classes.map}
         >
