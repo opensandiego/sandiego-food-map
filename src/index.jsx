@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import DetailDialog from './components/DetailDialog.jsx';
 import DrawerStyled from './components/DrawerStyled.jsx'
+import AlertDialog from './components/AlertDialog.jsx'
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
@@ -28,8 +29,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import usZips from 'us-zips';
-
 
 // Load And Parse Data
 import parse from 'csv-parse/lib/sync';
@@ -139,6 +138,8 @@ function ZoomComponent(props) {
   return null
 }
 
+
+
 function FoodMap() {
   const classes = useStyles();
   const theme = useTheme();
@@ -149,6 +150,7 @@ function FoodMap() {
   const [search, setSearch] = React.useState([32.8546305, -117.051348])
   const [centerZoom, setCenterZoom] = React.useState([32.8546305, -117.051348])
   const [position, setPosition] = React.useState(SAN_DIEGO_CENTER)
+  const [openButton, setOpenButton] = React.useState(false);
 
   const handleDataLoaded = (data) => {
     setData(data)
@@ -156,6 +158,14 @@ function FoodMap() {
 
   const handleDetailClose = () => {
     setDetail(null);
+  };
+
+  // const handleButtonClickOpen = () => {
+  //   setOpen(true);
+  // };
+
+  const handleClose = () => {
+    setOpenButton(false);
   };
 
   const handleDrawerOpen = () => {
@@ -171,24 +181,28 @@ function FoodMap() {
   }
 
   const handleClick = () => {
-    const zip = usZips[search]
-    console.log(zip.latitude, zip.longitude)
-    setPosition([zip.latitude, zip.longitude]);
-  }
-
-
-fetch('https://nominatim.openstreetmap.org/search?q=135+alvarado+street+california&format=xml&polygon_geojson=1&addressdetails=1')
+    fetch(`https://nominatim.openstreetmap.org/search?q=${search}&viewbox=-119.39075%2C33.51674%2C-116.28162%2C32.54735&bounded=1&format=jsonv2`)
       .then(res => {
-        if (res.ok){
-          console.log("Yeah, successfull API fetch")
-          console.log(res, "res")
-          return response
+        if (res.ok) {
+          return res.json()
         } else {
           console.log("Not successful")
         }
       })
-      .then(data => console.log(data, "data second then"))
+      .then(data => {
+        if (data[0] == !undefined) {
+          { setPosition([data[0].lat, data[0].lon]) };
+        }
+        else {
+          setOpenButton(true);
+        }
+      })
+      // console.log(data[0].lon, data[0].lat, "data second then")})
       .catch(error => console.log(error))
+  }
+
+
+
 
   // Effect to load our data
   useEffect(() => {
@@ -268,6 +282,9 @@ fetch('https://nominatim.openstreetmap.org/search?q=135+alvarado+street+californ
             className={clsx(classes.menuButton, open && classes.hide)}          >
             <MenuIcon />
           </IconButton>
+
+          <AlertDialog openButton={openButton} handleClose={handleClose} />
+
           <Typography variant="h6" color="inherit" noWrap className={classes.title}>
             San Diego Food Map
                     </Typography>
