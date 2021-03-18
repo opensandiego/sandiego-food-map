@@ -13,7 +13,7 @@ Project team members meet during the regularly Open San Diego project nights. Se
 Once you volunteer to work on an issue assign yourself to the issue or ask a Project Lead to assign you to the issue.  Read the issue, request clarification of the issue, and desired outcomes with Project Leads. 
 
 ## Fork the Repository
-Login to your GitHub account, if you have not done so already, requested access to the project repository so that you can contribute to it.   Once access has been provied to your account create a  `fork` of the [San Diego Food Map]https://github.com/opensandiego/sandiego-food-map/ project using GitHub's UI.
+Login to your GitHub account, if you have not done so already, requested access to the project repository so that you can contribute to it.   Once access has been provied to your account create a  `fork` of the [San Diego Food Map](https://github.com/opensandiego/sandiego-food-map/) project using GitHub's UI.
 
 ## Clone Repository
 
@@ -53,7 +53,7 @@ Refresh your forked repository to contain any changes from other pull requests.
 * Docker - Containerizing development 
 ## Contact
 
-Virtually during weekly Open San Diego meeting hosted on Discord.  On an Adhoc basis using Slack. An active Slack link can be found on our website:
+Virtually during weekly Open San Diego meeting hosted on Discord. On an Adhoc basis using Slack. An active Slack link can be found on our website:
 
 ***[opensandiego.org](https://opensandiego.org/)***
 
