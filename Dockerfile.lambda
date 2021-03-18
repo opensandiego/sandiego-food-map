@@ -1,0 +1,22 @@
+# Dockerfile for building lambda function zip file
+# See https://github.com/lambci/docker-lambda#using-a-dockerfile-to-build
+#
+# ** To build this locally do **
+# docker build -t sandiego-food-map-lambda -f Dockerfile.lambda .
+# 
+# ** To run as as test without sending the result to AWS S3 (just prints to console)
+# docker run -v $PWD/data:/var/task/data -it sandiego-food-map-lambda python lambda_function.py
+#
+# ** To build it and deploy the function.zip to a lambda task named opensandiego-foodmap-update in the s3 bucket opensandiego do:
+# AWS_ACCESS_KEY_ID=YOURACCESSKEY AWS_SECRET_ACCESS_KEY=YOURSECRETKEY docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY sandiego-food-map-lambda
+# 
+FROM lambci/lambda:build-python3.8
+ENV AWS_DEFAULT_REGION us-west-1
+COPY *.py ./
+COPY lambda_requirements.txt .
+RUN pip3 install -r lambda_requirements.txt --target .
+RUN zip -9yr function.zip .
+
+# TODO maybe allow this to be targeted with env variables
+CMD aws s3 cp ./function.zip s3://opensandiego/function.zip && aws lambda update-function-code --function-name opensandiego-foodmap-update --s3-bucket opensandiego --s3-key function.zip 
+
