@@ -18,7 +18,7 @@
 ℹ ｢wds｣: Content not from webpack is served from <your start directory>/sandiego-food-map/dist
 ℹ ｢wds｣: 404s will fallback to /index.html
 ~~~
-At this point application has been started, and output messages will be logged to stdout (usually your screen). 
+At this point the application has been started, and output messages will be logged to stdout (usually your screen). 
 
 3. From your browser go the the URL the project is running, in above case http://0.0.0.0:0000
 ## Docker
