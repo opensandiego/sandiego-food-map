@@ -1,7 +1,6 @@
 Site | URL | Build Status | Deploy Status
 --- |--- |:---:|:---:|
-Development | | [![Push/PR](https://github.com/pmelendez2/sandiego-food-map.svg?branch=master)](https://github.com/pmelendez2/sandiego-food-map) | |
-Production | | [![Push/PR](https://github.com/pmelendez2/sandiego-food-map.svg?branch=master)](https://github.com/pmelendez2/sandiego-food-map) | |
+Development | | [![Push/PR Build](https://github.com/pmelendez2/sandiego-food-map/actions/workflows/build_on_push_or_pullrequest.yml/badge.svg)](https://github.com/pmelendez2/sandiego-food-map/actions/workflows/build_on_push_or_pullrequest.yml) | |
 <br />
 
 # San Diego Food Map
