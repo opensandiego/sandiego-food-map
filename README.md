@@ -1,3 +1,7 @@
+Site | URL | Build Status | Deploy Status
+--- |--- |:---:|:---:|
+Development | | | ![Build Status](https://github.com/pmelendez2/sandiego-food-maps/workflows/San%20Diego%20Food%20Map%20Build/badge.svg?branch=master)
+
 # San Diego Food Map
 
 ## What is this? 

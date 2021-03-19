@@ -1,4 +1,4 @@
-name: Build  
+name: San Diego Food Map Build  
 on: 
   push:
   pull_request:
