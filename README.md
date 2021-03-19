@@ -1,6 +1,6 @@
 Site | URL | Build Status | Deploy Status
 --- |--- |:---:|:---:|
-Development | | [![Push/PR Build](https://github.com/pmelendez2/sandiego-food-map/actions/workflows/build_on_push_or_pullrequest.yml/badge.svg)](https://github.com/pmelendez2/sandiego-food-map/actions/workflows/build_on_push_or_pullrequest.yml) | |
+Development | | [![Push/PR Build](https://github.com/opensandiego/sandiego-food-map/actions/workflows/build_on_push_or_pullrequest.yml/badge.svg)](https://github.com/opensandiego/sandiego-food-map/actions/workflows/build_on_push_or_pullrequest.yml) | |
 <br />
 
 # San Diego Food Map
