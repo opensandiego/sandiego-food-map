@@ -1,3 +1,8 @@
+Site | URL | Build Status | Deploy Status
+--- |--- |:---:|:---:|
+Development | | [![Push/PR Build](https://github.com/opensandiego/sandiego-food-map/actions/workflows/build_on_push_or_pullrequest.yml/badge.svg)](https://github.com/opensandiego/sandiego-food-map/actions/workflows/build_on_push_or_pullrequest.yml) |[![Netlify](https://api.netlify.com/api/v1/badges/bbc65cdd-045e-4d4c-a865-85be7d9609ac/deploy-status)](https://app.netlify.com/sites/sandiego-food-map/deploys)|
+<br />
+
 # San Diego Food Map
 
 ## What is this? 
