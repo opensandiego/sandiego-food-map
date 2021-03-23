@@ -124,7 +124,7 @@ function FoodMap(){
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [data, setData] = React.useState([])
-    const [filters, setFilters] = React.useState({Service_Status__c:"Active"})
+    const [filters, setFilters] = React.useState({Service_Status__c: (x) => x == "Active"})
     const [detail, setDetail] = React.useState(null);
 
     const handleDataLoaded = (data) => {
@@ -143,6 +143,10 @@ function FoodMap(){
         setOpen(false);
     }
 
+    const addFilter = (name, filter) => {
+        setFilters(Object.assign({}, filters, {[name]: filter}))
+    }
+  
     // Effect to load our data
     useEffect(() => {
         if(data.length == 0){
@@ -162,7 +166,7 @@ function FoodMap(){
     // Processed data
     const filtered_list = data.filter((d) => {
         for( var k in filters){
-            if( d[k] != filters[k]){ 
+            if(!filters[k](d[k])){ 
                 return false 
             }
         }
@@ -231,7 +235,7 @@ function FoodMap(){
                 </Toolbar>
             </AppBar>
 
-        <DrawerStyled open={open} handleDrawerClose={handleDrawerClose} theme={theme} classes={classes}/>
+        <DrawerStyled open={open} handleDrawerClose={handleDrawerClose} theme={theme} classes={classes} addFilter={addFilter}/>
 
             <main
                 className={clsx(classes.content, {
