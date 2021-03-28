@@ -294,7 +294,7 @@ function FoodMap() {
             San Diego Food Map
           </Typography>
 
-          <AddressLookUp />
+          <AddressLookUp onChange={handleZipChange}  onClick={handleClick} />
 
           {/* <TextField
             className={classes.addressSearchBar}

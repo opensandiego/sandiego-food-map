@@ -18,7 +18,7 @@ searchButton: {
     },}))
 
 
-const AddressLookUp = ({ handleClick, handleZipChange }) => {
+const AddressLookUp = ({ onClick, onChange }) => {
 const classes = useStyles();
   return (
     <>
@@ -26,13 +26,13 @@ const classes = useStyles();
         className={classes.addressSearchBar}
         placeholder="look up an address"
         color="inherit"
-        onChange={handleZipChange}
+        onChange={onChange}
         name="search"
       />
       <Button
         startIcon={<SearchIcon />}
         color="inherit"
-        onClick={handleClick}
+        onClick={onClick}
         className={classes.searchButton}
       >
         Search
