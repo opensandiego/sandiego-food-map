@@ -162,7 +162,10 @@ function FoodMap() {
   };
 
   const handleZipChange = (e) => {
-    setSearch(e.target.value);
+    setTimeout(() => {
+      setSearch(e.target.value);
+      // console.log('Hello, World!')
+    }, 500);
   };
 
   function ZoomComponent(props) {
