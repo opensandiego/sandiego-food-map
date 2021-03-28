@@ -8,12 +8,7 @@ import ReactDOM from "react-dom";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import marker_icon from "leaflet/dist/images/marker-icon.png";
-import {
-  MapContainer,
-  TileLayer,
-  ZoomControl,
-  useMap,
-} from "react-leaflet";
+import { MapContainer, TileLayer, ZoomControl, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
 // React and MAterial - UI
@@ -21,6 +16,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AddressLookUp from "./components/AddressLookUp.jsx";
+import SelfLookUp from "./components/SelfLookUp.jsx";
 import DetailDialog from "./components/DetailDialog.jsx";
 import DrawerStyled from "./components/DrawerStyled.jsx";
 import AlertDialog from "./components/AlertDialog.jsx";
@@ -176,6 +172,13 @@ function FoodMap() {
     return null;
   }
 
+ const locateUser = () => { navigator.geolocation.getCurrentPosition((e) => {
+
+   
+   setPosition([e.coords.latitude, e.coords.latitude], setCenterZoom(13));
+    console.log("SOMETHING")
+  })};
+
   const handleClick = () => {
     fetch(
       `https://nominatim.openstreetmap.org/search?q=${search}&viewbox=-119.39075%2C33.51674%2C-116.28162%2C32.54735&bounded=1&format=jsonv2`
@@ -294,23 +297,11 @@ function FoodMap() {
             San Diego Food Map
           </Typography>
 
-          <AddressLookUp onChange={handleZipChange}  onClick={handleClick} />
-
-          {/* <TextField
-            className={classes.addressSearchBar}
-            placeholder="look up an address"
-            color="inherit"
-            onChange={handleZipChange}
-            name="search"
+          <AddressLookUp onChange={handleZipChange} onClick={handleClick} />
+          <SelfLookUp
+            onClick={locateUser}
           />
-          <Button
-            startIcon={<SearchIcon />}
-            color="inherit"
-            onClick={handleClick}
-            className={classes.searchButton}
-          >
-            Search
-          </Button> */}
+
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"

@@ -3,6 +3,7 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import SearchIcon from "@material-ui/icons/Search";
+import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 
@@ -10,11 +11,11 @@ const useStyles = makeStyles((theme) => ({
 searchButton: {
       marginTop: "1vw",
       marginBottom: "1vw",
-      marginRight: "10%",
+      marginRight: "5%",
     },
     addressSearchBar: {
       color: "white",
-      width: "50%",
+      width: "20%",
     },}))
 
 
