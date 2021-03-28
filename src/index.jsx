@@ -1,62 +1,65 @@
-import './style.css';
+import "./style.css";
 
 // React
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 
 // Leaflet Style and JS for React
-import 'leaflet/dist/leaflet.css';
-import 'react-leaflet-markercluster/dist/styles.min.css';
-import marker_icon from 'leaflet/dist/images/marker-icon.png'
-import { MapContainer, TileLayer, ZoomControl, useMapEvent, useMap } from 'react-leaflet'
-import MarkerClusterGroup from 'react-leaflet-markercluster';
+import "leaflet/dist/leaflet.css";
+import "react-leaflet-markercluster/dist/styles.min.css";
+import marker_icon from "leaflet/dist/images/marker-icon.png";
+import {
+  MapContainer,
+  TileLayer,
+  ZoomControl,
+  useMap,
+} from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-markercluster";
 
 // React and MAterial - UI
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import DetailDialog from './components/DetailDialog.jsx';
-import DrawerStyled from './components/DrawerStyled.jsx'
-import AlertDialog from './components/AlertDialog.jsx'
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import ListItem from '@material-ui/core/ListItem';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import PopUpInfo from './components/PopUpInfo.jsx';
-import TextField from '@material-ui/core/TextField';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import AppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import AddressLookUp from "./components/AddressLookUp.jsx";
+import DetailDialog from "./components/DetailDialog.jsx";
+import DrawerStyled from "./components/DrawerStyled.jsx";
+import AlertDialog from "./components/AlertDialog.jsx";
+import IconButton from "@material-ui/core/IconButton";
+import Link from "@material-ui/core/Link";
+import ListItem from "@material-ui/core/ListItem";
+import MenuIcon from "@material-ui/icons/Menu";
+// import SearchIcon from "@material-ui/icons/Search";
+import PopUpInfo from "./components/PopUpInfo.jsx";
+// import TextField from "@material-ui/core/TextField";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import clsx from "clsx";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 // Load And Parse Data
-import parse from 'csv-parse/lib/sync';
-import axios from 'axios';
-
-
+import parse from "csv-parse/lib/sync";
+import axios from "axios";
 
 // Constants
-const SAN_DIEGO_CENTER = [32.8546305, -117.051348]
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/1PACX-1vTSnF1wYkCiAbHAqhs_WG2i0EjVh5JPRTAp5pQW-9b_52TsYuaEOzNgz8EbFEGO6JB1o2Okd4QWRAWR/pub?output=csv"
+const SAN_DIEGO_CENTER = [32.8546305, -117.051348];
+const CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/1PACX-1vTSnF1wYkCiAbHAqhs_WG2i0EjVh5JPRTAp5pQW-9b_52TsYuaEOzNgz8EbFEGO6JB1o2Okd4QWRAWR/pub?output=csv";
 const DRAWER_WIDTH = 240;
 
 // leaflet css does not import into webpack nicely
 const blueIcon = L.icon({
-  iconUrl: marker_icon
-})
+  iconUrl: marker_icon,
+});
 
 // clean tel numbers for tel+ links
-const telLinkRE = /[^\d]/g
-
+const telLinkRE = /[^\d]/g;
 
 // From Drawer Example
 // https://material-ui.com/components/drawers/
 const useStyles = makeStyles((theme) => ({
-  app: {
-  },
+  app: {},
   appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -64,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   appBarShift: {
     width: `calc(100% - ${DRAWER_WIDTH}px)`,
     marginLeft: DRAWER_WIDTH,
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -73,19 +76,19 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   searchButton: {
-    marginTop: '1vw',
-    marginBottom: '1vw',
-    marginRight: '10%',
+    marginTop: "1vw",
+    marginBottom: "1vw",
+    marginRight: "10%",
   },
   addressSearchBar: {
-    color: 'white',
-    width: '50%',
+    color: "white",
+    width: "50%",
   },
   title: {
     flexGrow: 1,
   },
   hide: {
-    display: 'none',
+    display: "none",
   },
   drawer: {
     width: DRAWER_WIDTH,
@@ -95,27 +98,27 @@ const useStyles = makeStyles((theme) => ({
     width: DRAWER_WIDTH,
   },
   drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   content: {
     flexGrow: 1,
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -DRAWER_WIDTH,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   map: {
-    height: `calc(100% - 64px)`  // TODO make this adapt to header height
+    height: `calc(100% - 64px)`, // TODO make this adapt to header height
   },
   contentShift: {
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -126,26 +129,25 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   dialogContent: {
-    marginTop: '100px'  // TODO make this adapt to header height
-  }
+    marginTop: "100px", // TODO make this adapt to header height
+  },
 }));
-
 
 function FoodMap() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [data, setData] = React.useState([])
-  const [filters, setFilters] = React.useState({ Service_Status__c: "Active" })
+  const [data, setData] = React.useState([]);
+  const [filters, setFilters] = React.useState({ Service_Status__c: "Active" });
   const [detail, setDetail] = React.useState(null);
-  const [search, setSearch] = React.useState([32.8546305, -117.051348])
-  const [centerZoom, setCenterZoom] = React.useState(10)
-  const [position, setPosition] = React.useState(SAN_DIEGO_CENTER)
+  const [search, setSearch] = React.useState([32.8546305, -117.051348]);
+  const [centerZoom, setCenterZoom] = React.useState(10);
+  const [position, setPosition] = React.useState(SAN_DIEGO_CENTER);
   const [openButton, setOpenButton] = React.useState(false);
 
   const handleDataLoaded = (data) => {
-    setData(data)
-  }
+    setData(data);
+  };
 
   const handleDetailClose = () => {
     setDetail(null);
@@ -157,107 +159,113 @@ function FoodMap() {
 
   const handleDrawerOpen = () => {
     setOpen(true);
-  }
+  };
 
   const handleDrawerClose = () => {
     setOpen(false);
-  }
+  };
 
   const handleZipChange = (e) => {
-    setSearch(e.target.value)
+    setSearch(e.target.value);
+  };
+
+  function ZoomComponent(props) {
+    const map = useMap();
+    console.log(props.center, "position props.center");
+    map.setView(props.center, centerZoom);
+    return null;
   }
 
-  
-function ZoomComponent(props) {
-  const map = useMap()
-  console.log(props.center, "position props.center")
-  map.setView(props.center, centerZoom);
-  return null
-}
-
   const handleClick = () => {
-    fetch(`https://nominatim.openstreetmap.org/search?q=${search}&viewbox=-119.39075%2C33.51674%2C-116.28162%2C32.54735&bounded=1&format=jsonv2`)
-      .then(res => {
+    fetch(
+      `https://nominatim.openstreetmap.org/search?q=${search}&viewbox=-119.39075%2C33.51674%2C-116.28162%2C32.54735&bounded=1&format=jsonv2`
+    )
+      .then((res) => {
         if (res.ok) {
-          return res.json()
+          return res.json();
         } else {
-          console.log("Not successful")
+          console.log("Not successful");
         }
       })
-      .then(data => {
+      .then((data) => {
         if (data[0]) {
-          { setPosition([data[0].lat, data[0].lon]), setCenterZoom(15) };
-        }
-        else {
+          {
+            setPosition([data[0].lat, data[0].lon]), setCenterZoom(15);
+          }
+        } else {
           setOpenButton(true);
         }
       })
-      .catch(error => console.log(error))
-  }
+      .catch((error) => console.log(error));
+  };
 
   // Effect to load our data
   useEffect(() => {
     if (data.length == 0) {
       axios.get(CSV_URL).then((response) => {
-        const locations = parse(
-          response.data,
-          { columns: true, skip_empty_lines: true }
-        )
-        console.log(locations)
-        setData(locations)
-        window.data = locations
-      })
+        const locations = parse(response.data, {
+          columns: true,
+          skip_empty_lines: true,
+        });
+        console.log(locations);
+        setData(locations);
+        window.data = locations;
+      });
     }
-  })
-
+  });
 
   // Processed data
   const filtered_list = data.filter((d) => {
     for (var k in filters) {
       if (d[k] != filters[k]) {
-        return false
+        return false;
       }
     }
-    return true
-  })
+    return true;
+  });
 
   // Group markers by zip
   const by_zip = filtered_list.reduce((by_zip, d) => {
     if (!by_zip.hasOwnProperty(d.Physical_Zip_Code__c)) {
-      by_zip[d.Physical_Zip_Code__c] = []
+      by_zip[d.Physical_Zip_Code__c] = [];
     }
     by_zip[d.Physical_Zip_Code__c].push(d);
     return by_zip;
-  }, {})
+  }, {});
 
-  window.by_zip = by_zip
+  window.by_zip = by_zip;
   // Then generate marker clusters
-  const marker_clusters = Object.entries(by_zip).map(zip_data => {
-    const markers = zip_data[1].map(d => {
+  const marker_clusters = Object.entries(by_zip).map((zip_data) => {
+    const markers = zip_data[1].map((d) => {
       const pos = [d.Geo_Location__Latitude__s, d.Geo_Location__Longitude__s];
-      const marker = <PopUpInfo d={d} position={pos} icon={blueIcon} setDetail={setDetail} />
-      return marker
-    })
-    return <MarkerClusterGroup key={zip_data[0]}>
-      {markers}
-    </MarkerClusterGroup>
-  })
-
+      const marker = (
+        <PopUpInfo d={d} position={pos} icon={blueIcon} setDetail={setDetail} />
+      );
+      return marker;
+    });
+    return <MarkerClusterGroup key={zip_data[0]}>{markers}</MarkerClusterGroup>;
+  });
 
   // Generate Drawer items
   // NOT USED
   const list_items = filtered_list.map((d) => {
-    const phone = `tel:${d.Phone_Number__c.replaceAll(telLinkRE, '')}`
-    return <ListItem key={d.Id}>
-      <Typography>{d.Name}</Typography>
-      <Link href={phone}>{d.Phone_Number__c}</Link>
-    </ListItem>
-  })
+    const phone = `tel:${d.Phone_Number__c.replaceAll(telLinkRE, "")}`;
+    return (
+      <ListItem key={d.Id}>
+        <Typography>{d.Name}</Typography>
+        <Link href={phone}>{d.Phone_Number__c}</Link>
+      </ListItem>
+    );
+  });
 
-  const detailDialog = (detail != null) ? (
-    <DetailDialog classes={classes} handleDetailClose={handleDetailClose} detail={detail} />
-  ) : null
-
+  const detailDialog =
+    detail != null ? (
+      <DetailDialog
+        classes={classes}
+        handleDetailClose={handleDetailClose}
+        detail={detail}
+      />
+    ) : null;
 
   // Return our fragment
   return (
@@ -270,36 +278,55 @@ function ZoomComponent(props) {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}          >
+            className={clsx(classes.menuButton, open && classes.hide)}
+          >
             <MenuIcon />
           </IconButton>
 
           <AlertDialog openButton={openButton} handleClose={handleClose} />
 
-          <Typography variant="h6" color="inherit" noWrap className={classes.title}>
+          <Typography
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
             San Diego Food Map
-                    </Typography>
+          </Typography>
 
-          <TextField
+          <AddressLookUp />
+
+          {/* <TextField
             className={classes.addressSearchBar}
             placeholder="look up an address"
             color="inherit"
             onChange={handleZipChange}
-            name='search'
+            name="search"
           />
-          <Button startIcon={<SearchIcon />} color="inherit" onClick={handleClick} className={classes.searchButton}
+          <Button
+            startIcon={<SearchIcon />}
+            color="inherit"
+            onClick={handleClick}
+            className={classes.searchButton}
           >
             Search
-           </Button>
+          </Button> */}
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"
             target="_blank"
-          >About</Button>
+          >
+            About
+          </Button>
         </Toolbar>
       </AppBar>
 
-      <DrawerStyled open={open} handleDrawerClose={handleDrawerClose} theme={theme} classes={classes} />
+      <DrawerStyled
+        open={open}
+        handleDrawerClose={handleDrawerClose}
+        theme={theme}
+        classes={classes}
+      />
 
       <main
         className={clsx(classes.content, {
@@ -325,7 +352,7 @@ function ZoomComponent(props) {
       </main>
       {detailDialog}
     </React.Fragment>
-  )
+  );
 }
 
-ReactDOM.render(<FoodMap />, document.getElementById("app"))
+ReactDOM.render(<FoodMap />, document.getElementById("app"));
