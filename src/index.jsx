@@ -164,8 +164,9 @@ function FoodMap() {
   const handleZipChange = (e) => {
     setTimeout(() => {
       setSearch(e.target.value);
-      // console.log('Hello, World!')
-    }, 500);
+      console.log('Hello, World!')
+    }, 800);
+    return () => clearTimeout(handleZipChange);
   };
 
   function ZoomComponent(props) {
