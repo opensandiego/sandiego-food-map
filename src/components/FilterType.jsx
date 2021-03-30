@@ -11,17 +11,23 @@ const allSitesFilter = () => true;
 const FilterType = ({ addFilter }) => {
   const changeSiteFilter = (filterer) => addFilter("Description__c", filterer);
   return (
-    <React.Fragment>
-      <Button onClick={() => changeSiteFilter(soupKitchenFilter)}>
+    <span style={{marginLeft: 10}}>
+      <Button
+        color="inherit"
+        onClick={() => changeSiteFilter(soupKitchenFilter)}
+      >
         Soup Kitchens
       </Button>
-      <Button onClick={() => changeSiteFilter(foodPantryFilter)}>
+      <Button
+        color="inherit"
+        onClick={() => changeSiteFilter(foodPantryFilter)}
+      >
         Food Pantries
       </Button>
-      <Button onClick={() => changeSiteFilter(allSitesFilter)}>
+      <Button color="inherit" onClick={() => changeSiteFilter(allSitesFilter)}>
         All Sites
       </Button>
-    </React.Fragment>
+    </span>
   );
 };
 

@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import DetailDialog from './components/DetailDialog.jsx';
 import DrawerStyled from './components/DrawerStyled.jsx'
+import FilterType from './components/FilterType.jsx'
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
@@ -69,9 +70,6 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
-    flexGrow: 1,
-  },
   hide: {
     display: 'none',
   },
@@ -109,9 +107,10 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
-  title: {
+  header: {
     marginLeft: theme.spacing(2),
     flex: 1,
+    display: 'flex',
   },
   dialogContent: {
     marginTop: '100px'  // TODO make this adapt to header height
@@ -224,9 +223,12 @@ function FoodMap(){
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" color="inherit" noWrap className={classes.title}>
-                        San Diego Food Map 
-                    </Typography>
+                    <span className={classes.header}>
+                        <Typography variant="h6" color="inherit" noWrap>
+                            San Diego Food Map
+                        </Typography>
+                    <FilterType addFilter={addFilter}/>
+                    </span>
                     <Button 
                         href="https://github.com/opensandiego/sandiego-food-map" 
                         color="inherit"

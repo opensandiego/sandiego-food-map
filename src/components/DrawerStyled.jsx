@@ -9,15 +9,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import FilterType from "./FilterType.jsx";
-
-const DrawerStyled = ({
-  classes,
-  open,
-  handleDrawerClose,
-  theme,
-  addFilter,
-}) => {
+const DrawerStyled = ({ classes, open, handleDrawerClose, theme }) => {
   return (
     <Drawer
       className={classes.drawer}
@@ -40,9 +32,7 @@ const DrawerStyled = ({
       <Divider />
       <List>
         <ListItem>
-          <ListItemText>
-            <FilterType addFilter={addFilter} />
-          </ListItemText>
+          <ListItemText>Filtering Coming Soon!</ListItemText>
         </ListItem>
       </List>
     </Drawer>
