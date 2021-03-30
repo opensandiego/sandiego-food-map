@@ -24,9 +24,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Link from "@material-ui/core/Link";
 import ListItem from "@material-ui/core/ListItem";
 import MenuIcon from "@material-ui/icons/Menu";
-// import SearchIcon from "@material-ui/icons/Search";
 import PopUpInfo from "./components/PopUpInfo.jsx";
-// import TextField from "@material-ui/core/TextField";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import clsx from "clsx";
@@ -136,11 +134,12 @@ function FoodMap() {
   const [data, setData] = React.useState([]);
   const [filters, setFilters] = React.useState({ Service_Status__c: "Active" });
   const [detail, setDetail] = React.useState(null);
-  const [search, setSearch] = React.useState([32.8546305, -117.051348]);
+  // const [search, setSearch] = React.useState([32.8546305, -117.051348]);
   const [centerZoom, setCenterZoom] = React.useState(10);
   const [position, setPosition] = React.useState(SAN_DIEGO_CENTER);
   const [openButton, setOpenButton] = React.useState(false);
 
+      console.log("ahhh, Food map rendering")
   const handleDataLoaded = (data) => {
     setData(data);
   };
@@ -161,13 +160,24 @@ function FoodMap() {
     setOpen(false);
   };
 
-  const handleZipChange = (e) => {
-    setTimeout(() => {
-      setSearch(e.target.value);
-      console.log('Hello, World!')
-    }, 800);
-    return () => clearTimeout(handleZipChange);
-  };
+
+const onSearchComplete = (data) => {
+  if (data[0]) {
+    {
+      setPosition([data[0].lat, data[0].lon]), setCenterZoom(15);
+    }
+  } else {
+    setOpenButton(true);
+  }
+};
+
+  // const handleZipChange = (e) => {
+  //   setTimeout(() => {
+  //     setSearch(e.target.value);
+  //     // console.log('Hello, World!')
+  //   }, 800);
+  //   return () => clearTimeout(handleZipChange);
+  // };
 
   function ZoomComponent(props) {
     const map = useMap();
@@ -183,28 +193,28 @@ function FoodMap() {
     console.log("SOMETHING")
   })};
 
-  const handleClick = () => {
-    fetch(
-      `https://nominatim.openstreetmap.org/search?q=${search}&viewbox=-119.39075%2C33.51674%2C-116.28162%2C32.54735&bounded=1&format=jsonv2`
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          console.log("Not successful");
-        }
-      })
-      .then((data) => {
-        if (data[0]) {
-          {
-            setPosition([data[0].lat, data[0].lon]), setCenterZoom(15);
-          }
-        } else {
-          setOpenButton(true);
-        }
-      })
-      .catch((error) => console.log(error));
-  };
+  // const handleClick = () => {
+  //   fetch(
+  //     `https://nominatim.openstreetmap.org/search?q=${search}&viewbox=-119.39075%2C33.51674%2C-116.28162%2C32.54735&bounded=1&format=jsonv2`
+  //   )
+  //     .then((res) => {
+  //       if (res.ok) {
+  //         return res.json();
+  //       } else {
+  //         console.log("Not successful");
+  //       }
+  //     })
+  //     .then((data) => {
+  //       if (data[0]) {
+  //         {
+  //           setPosition([data[0].lat, data[0].lon]), setCenterZoom(15);
+  //         }
+  //       } else {
+  //         setOpenButton(true);
+  //       }
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
 
   // Effect to load our data
   useEffect(() => {
@@ -301,7 +311,7 @@ function FoodMap() {
             San Diego Food Map
           </Typography>
 
-          <AddressLookUp onChange={handleZipChange} onClick={handleClick} />
+          <AddressLookUp onSearchComplete={onSearchComplete} />
           <SelfLookUp
             onClick={locateUser}
           />
