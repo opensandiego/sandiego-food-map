@@ -56,8 +56,9 @@ const blueIcon = L.icon({
 });
 
 const newIcon = L.icon({
-  iconUrl: marker,
-  iconSize: [25, 25]
+  // iconUrl: marker,
+  iconUrl: newMarker,
+  iconSize: [40, 40]
 });
 
 // clean tel numbers for tel+ links
