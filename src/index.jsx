@@ -134,7 +134,6 @@ function FoodMap() {
   const [data, setData] = React.useState([]);
   const [filters, setFilters] = React.useState({ Service_Status__c: "Active" });
   const [detail, setDetail] = React.useState(null);
-  // const [search, setSearch] = React.useState([32.8546305, -117.051348]);
   const [centerZoom, setCenterZoom] = React.useState(10);
   const [position, setPosition] = React.useState(SAN_DIEGO_CENTER);
   const [openButton, setOpenButton] = React.useState(false);
@@ -171,14 +170,6 @@ const onSearchComplete = (data) => {
   }
 };
 
-  // const handleZipChange = (e) => {
-  //   setTimeout(() => {
-  //     setSearch(e.target.value);
-  //     // console.log('Hello, World!')
-  //   }, 800);
-  //   return () => clearTimeout(handleZipChange);
-  // };
-
   function ZoomComponent(props) {
     const map = useMap();
     console.log(props.center, "position props.center");
@@ -192,29 +183,6 @@ const onSearchComplete = (data) => {
    setPosition([e.coords.latitude, e.coords.latitude], setCenterZoom(13));
     console.log("SOMETHING")
   })};
-
-  // const handleClick = () => {
-  //   fetch(
-  //     `https://nominatim.openstreetmap.org/search?q=${search}&viewbox=-119.39075%2C33.51674%2C-116.28162%2C32.54735&bounded=1&format=jsonv2`
-  //   )
-  //     .then((res) => {
-  //       if (res.ok) {
-  //         return res.json();
-  //       } else {
-  //         console.log("Not successful");
-  //       }
-  //     })
-  //     .then((data) => {
-  //       if (data[0]) {
-  //         {
-  //           setPosition([data[0].lat, data[0].lon]), setCenterZoom(15);
-  //         }
-  //       } else {
-  //         setOpenButton(true);
-  //       }
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
 
   // Effect to load our data
   useEffect(() => {
