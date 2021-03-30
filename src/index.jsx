@@ -8,13 +8,15 @@ import ReactDOM from "react-dom";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import marker_icon from "leaflet/dist/images/marker-icon.png";
+// import shadow_icon from "leaflet/dist/images/marker-shadow.png";
+import newMarker from '../assets/newMarker.svg';
+import marker from '../assets/marker.jpg';
+
 import {
   MapContainer,
   TileLayer,
   ZoomControl,
   useMap,
-  Marker,
-  useMapEvents,
 } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
@@ -34,19 +36,12 @@ import MenuIcon from "@material-ui/icons/Menu";
 import PopUpInfo from "./components/PopUpInfo.jsx";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import SearchIcon from "@material-ui/icons/Search";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 // Load And Parse Data
 import parse from "csv-parse/lib/sync";
 import axios from "axios";
-import { Popup } from "leaflet";
-
-
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-
 
 
 // Constants
@@ -61,9 +56,8 @@ const blueIcon = L.icon({
 });
 
 const newIcon = L.icon({
-  // iconUrl: "/skateboarding.svg",
-  iconUrl: "/newMarker.svg",
-  // iconSize: [25, 25]
+  iconUrl: marker,
+  iconSize: [25, 25]
 });
 
 // clean tel numbers for tel+ links
@@ -187,31 +181,12 @@ function FoodMap() {
     return null;
   }
 
-  function MarkerTwo({isLocating}){
-    isLocating ?  <PopUpInfo d={data} position={position} icon={blueIcon} setDetail={setDetail} /> : null      
-    };
-
-
   const locateUser = () => {
     navigator.geolocation.getCurrentPosition((e) => {
       setPosition([e.coords.latitude, e.coords.latitude], setCenterZoom(13));
     });
     setLocating(true)
   };
-
-  // useEffect(() => {
-  //   console.log("Is smth logging?");
-  //   setLocating(true)
-  //   // const marker2 = () => {(
-     
-  //   //   <Marker icon={blueIcon} position={position} style={{height: '350px'}}>
-  //   //     <Popup>
-  //   //       A pretty CSS3 popup. <br /> Easily customizable.
-  //   //     </Popup>
-  //   //   </Marker>
-  //   //   // <PopUpInfo d={data} position={position} icon={blueIcon} setDetail={setDetail} />
-  //   // );
-  // }, [locateUser]);
 
   // Effect to load our data
   useEffect(() => {
@@ -263,9 +238,6 @@ function FoodMap() {
     });
     return <MarkerClusterGroup key={zip_data[0]}>{markers}</MarkerClusterGroup>;
   });
-
-
-  // const marker = L.marker([37.7544, -122.4477]).addTo(mymap);
 
   // Generate Drawer items
   // NOT USED
@@ -354,9 +326,8 @@ function FoodMap() {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
             {marker_clusters}
-          {/* <MarkerTwo isLocating={isLocating}/> */}
 
-          {isLocating && <PopUpInfo/>}
+          {isLocating && <PopUpInfo d={data} position={position} icon={newIcon} setDetail={setDetail}/>}
           
         </MapContainer>
       </main>
