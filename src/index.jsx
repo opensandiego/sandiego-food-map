@@ -69,15 +69,6 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  searchButton: {
-    marginTop: "1vw",
-    marginBottom: "1vw",
-    marginRight: "10%",
-  },
-  addressSearchBar: {
-    color: "white",
-    width: "50%",
-  },
   title: {
     flexGrow: 1,
   },
