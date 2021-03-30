@@ -8,7 +8,14 @@ import ReactDOM from "react-dom";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import marker_icon from "leaflet/dist/images/marker-icon.png";
-import { MapContainer, TileLayer, ZoomControl, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  ZoomControl,
+  useMap,
+  Marker,
+  useMapEvents,
+} from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
 // React and MAterial - UI
@@ -27,12 +34,20 @@ import MenuIcon from "@material-ui/icons/Menu";
 import PopUpInfo from "./components/PopUpInfo.jsx";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import SearchIcon from "@material-ui/icons/Search";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 // Load And Parse Data
 import parse from "csv-parse/lib/sync";
 import axios from "axios";
+import { Popup } from "leaflet";
+
+
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+
 
 // Constants
 const SAN_DIEGO_CENTER = [32.8546305, -117.051348];
@@ -43,6 +58,12 @@ const DRAWER_WIDTH = 240;
 // leaflet css does not import into webpack nicely
 const blueIcon = L.icon({
   iconUrl: marker_icon,
+});
+
+const newIcon = L.icon({
+  // iconUrl: "/skateboarding.svg",
+  iconUrl: "/newMarker.svg",
+  // iconSize: [25, 25]
 });
 
 // clean tel numbers for tel+ links
@@ -128,8 +149,8 @@ function FoodMap() {
   const [centerZoom, setCenterZoom] = React.useState(10);
   const [position, setPosition] = React.useState(SAN_DIEGO_CENTER);
   const [openButton, setOpenButton] = React.useState(false);
+  const [isLocating, setLocating] = React.useState(false);
 
-      console.log("ahhh, Food map rendering")
   const handleDataLoaded = (data) => {
     setData(data);
   };
@@ -150,30 +171,47 @@ function FoodMap() {
     setOpen(false);
   };
 
-
-const onSearchComplete = (data) => {
-  if (data[0]) {
-    {
-      setPosition([data[0].lat, data[0].lon]), setCenterZoom(15);
+  const onSearchComplete = (data) => {
+    if (data[0]) {
+      {
+        setPosition([data[0].lat, data[0].lon]), setCenterZoom(15);
+      }
+    } else {
+      setOpenButton(true);
     }
-  } else {
-    setOpenButton(true);
-  }
-};
+  };
 
   function ZoomComponent(props) {
     const map = useMap();
-    console.log(props.center, "position props.center");
     map.setView(props.center, centerZoom);
     return null;
   }
 
- const locateUser = () => { navigator.geolocation.getCurrentPosition((e) => {
+  function MarkerTwo({isLocating}){
+    isLocating ?  <PopUpInfo d={data} position={position} icon={blueIcon} setDetail={setDetail} /> : null      
+    };
 
-   
-   setPosition([e.coords.latitude, e.coords.latitude], setCenterZoom(13));
-    console.log("SOMETHING")
-  })};
+
+  const locateUser = () => {
+    navigator.geolocation.getCurrentPosition((e) => {
+      setPosition([e.coords.latitude, e.coords.latitude], setCenterZoom(13));
+    });
+    setLocating(true)
+  };
+
+  // useEffect(() => {
+  //   console.log("Is smth logging?");
+  //   setLocating(true)
+  //   // const marker2 = () => {(
+     
+  //   //   <Marker icon={blueIcon} position={position} style={{height: '350px'}}>
+  //   //     <Popup>
+  //   //       A pretty CSS3 popup. <br /> Easily customizable.
+  //   //     </Popup>
+  //   //   </Marker>
+  //   //   // <PopUpInfo d={data} position={position} icon={blueIcon} setDetail={setDetail} />
+  //   // );
+  // }, [locateUser]);
 
   // Effect to load our data
   useEffect(() => {
@@ -215,12 +253,19 @@ const onSearchComplete = (data) => {
     const markers = zip_data[1].map((d) => {
       const pos = [d.Geo_Location__Latitude__s, d.Geo_Location__Longitude__s];
       const marker = (
-        <PopUpInfo d={d} position={pos} icon={blueIcon} setDetail={setDetail} />
+      
+      
+      <PopUpInfo d={d} position={pos} icon={blueIcon} setDetail={setDetail} />
+
+     
       );
       return marker;
     });
     return <MarkerClusterGroup key={zip_data[0]}>{markers}</MarkerClusterGroup>;
   });
+
+
+  // const marker = L.marker([37.7544, -122.4477]).addTo(mymap);
 
   // Generate Drawer items
   // NOT USED
@@ -271,9 +316,7 @@ const onSearchComplete = (data) => {
           </Typography>
 
           <AddressLookUp onSearchComplete={onSearchComplete} />
-          <SelfLookUp
-            onClick={locateUser}
-          />
+          <SelfLookUp onClick={locateUser} />
 
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
@@ -305,13 +348,16 @@ const onSearchComplete = (data) => {
           className={classes.map}
         >
           <ZoomComponent center={position} />
-
           <ZoomControl position="bottomright" />
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {marker_clusters}
+            {marker_clusters}
+          {/* <MarkerTwo isLocating={isLocating}/> */}
+
+          {isLocating && <PopUpInfo/>}
+          
         </MapContainer>
       </main>
       {detailDialog}

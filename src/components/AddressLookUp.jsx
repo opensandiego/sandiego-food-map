@@ -52,7 +52,6 @@ const AddressLookUp = ({ onSearchComplete, theme, classes }) => {
         placeholder="look up an address"
         onChange={onChange}
         name="search"
-        className={classes.root}
         InputProps={{
           className: classes.input,
         }}
