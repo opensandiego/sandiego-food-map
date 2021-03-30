@@ -8,16 +8,9 @@ import ReactDOM from "react-dom";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 import marker_icon from "leaflet/dist/images/marker-icon.png";
-// import shadow_icon from "leaflet/dist/images/marker-shadow.png";
-import newMarker from '../assets/newMarker.svg';
-import marker from '../assets/marker.jpg';
+import newMarker from "../assets/newMarker.svg";
 
-import {
-  MapContainer,
-  TileLayer,
-  ZoomControl,
-  useMap,
-} from "react-leaflet";
+import { MapContainer, TileLayer, ZoomControl, useMap } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
 // React and MAterial - UI
@@ -42,7 +35,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 // Load And Parse Data
 import parse from "csv-parse/lib/sync";
 import axios from "axios";
-
+import { Tooltip } from "leaflet";
 
 // Constants
 const SAN_DIEGO_CENTER = [32.8546305, -117.051348];
@@ -56,9 +49,8 @@ const blueIcon = L.icon({
 });
 
 const newIcon = L.icon({
-  // iconUrl: marker,
   iconUrl: newMarker,
-  iconSize: [40, 40]
+  iconSize: [40, 40],
 });
 
 // clean tel numbers for tel+ links
@@ -169,6 +161,7 @@ function FoodMap() {
   const onSearchComplete = (data) => {
     if (data[0]) {
       {
+        setLocating(true);
         setPosition([data[0].lat, data[0].lon]), setCenterZoom(15);
       }
     } else {
@@ -186,7 +179,7 @@ function FoodMap() {
     navigator.geolocation.getCurrentPosition((e) => {
       setPosition([e.coords.latitude, e.coords.latitude], setCenterZoom(13));
     });
-    setLocating(true)
+    setLocating(true);
   };
 
   // Effect to load our data
@@ -229,11 +222,13 @@ function FoodMap() {
     const markers = zip_data[1].map((d) => {
       const pos = [d.Geo_Location__Latitude__s, d.Geo_Location__Longitude__s];
       const marker = (
-      
-      
-      <PopUpInfo d={d} position={pos} icon={blueIcon} setDetail={setDetail} />
-
-     
+        <PopUpInfo
+          d={d}
+          position={pos}
+          icon={blueIcon}
+          setDetail={setDetail}
+          isLocating={false}
+        />
       );
       return marker;
     });
@@ -276,9 +271,7 @@ function FoodMap() {
           >
             <MenuIcon />
           </IconButton>
-
           <AlertDialog openButton={openButton} handleClose={handleClose} />
-
           <Typography
             variant="h6"
             color="inherit"
@@ -287,10 +280,8 @@ function FoodMap() {
           >
             San Diego Food Map
           </Typography>
-
           <AddressLookUp onSearchComplete={onSearchComplete} />
           <SelfLookUp onClick={locateUser} />
-
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"
@@ -326,10 +317,17 @@ function FoodMap() {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-            {marker_clusters}
+          {marker_clusters}
 
-          {isLocating && <PopUpInfo d={data} position={position} icon={newIcon} setDetail={setDetail}/>}
-          
+          {isLocating && (
+            <PopUpInfo
+              d={data}
+              position={position}
+              icon={newIcon}
+              isLocating={true}
+              setDetail={setDetail}
+            />
+          )}
         </MapContainer>
       </main>
       {detailDialog}

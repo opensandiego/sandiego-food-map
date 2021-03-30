@@ -21,7 +21,7 @@ const styles = () =>
     },
   });
 
-const AddressLookUp = ({ onSearchComplete, theme, classes }) => {
+const AddressLookUp = ({ onSearchComplete, classes }) => {
   const [search, setSearch] = React.useState([32.8546305, -117.051348]);
 
   const onClick = () => {
