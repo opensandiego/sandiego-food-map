@@ -177,7 +177,7 @@ function FoodMap() {
 
   const locateUser = () => {
     navigator.geolocation.getCurrentPosition((e) => {
-      setPosition([e.coords.latitude, e.coords.latitude], setCenterZoom(13));
+      setPosition([e.coords.latitude, e.coords.longitude], setCenterZoom(13));
     });
     setLocating(true);
   };
