@@ -175,10 +175,22 @@ function FoodMap() {
     return null;
   }
 
+  // const locateUser = () => {
+  //   navigator.geolocation.getCurrentPosition((e) => {
+  //     setPosition([e.coords.latitude, e.coords.longitude], setCenterZoom(13));
+  //   });
+  //   setLocating(true);
+  // };
+
   const locateUser = () => {
-    navigator.geolocation.getCurrentPosition((e) => {
+    navigator.geolocation.getCurrentPosition(success, error);
+    function success(e) {
       setPosition([e.coords.latitude, e.coords.longitude], setCenterZoom(13));
-    });
+    }
+    function error(err) {
+       console.warn(`ERROR(${err.code}): ${err.message}`);
+       alert((`We are very sorry, but we can not automatically locate you. The following error occured: ${err.message}\n\nPlease provide your address in the address bar.`))
+    }
     setLocating(true);
   };
 
