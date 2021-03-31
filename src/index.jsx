@@ -137,6 +137,7 @@ function FoodMap() {
   const [position, setPosition] = React.useState(SAN_DIEGO_CENTER);
   const [openButton, setOpenButton] = React.useState(false);
   const [isLocating, setLocating] = React.useState(false);
+  const [selfLocating, setSelfLocating] = React.useState(true);
 
   const handleDataLoaded = (data) => {
     setData(data);
@@ -175,23 +176,20 @@ function FoodMap() {
     return null;
   }
 
-  // const locateUser = () => {
-  //   navigator.geolocation.getCurrentPosition((e) => {
-  //     setPosition([e.coords.latitude, e.coords.longitude], setCenterZoom(13));
-  //   });
-  //   setLocating(true);
-  // };
-
   const locateUser = () => {
     navigator.geolocation.getCurrentPosition(success, error);
     function success(e) {
       setPosition([e.coords.latitude, e.coords.longitude], setCenterZoom(13));
+      setLocating(true);
+      setSelfLocating(true);
     }
     function error(err) {
        console.warn(`ERROR(${err.code}): ${err.message}`);
        alert((`We are very sorry, but we can not automatically locate you. The following error occured: ${err.message}\n\nPlease provide your address in the address bar.`))
+       setLocating(false);
+       setSelfLocating(false);
     }
-    setLocating(true);
+    
   };
 
   // Effect to load our data
@@ -293,7 +291,7 @@ function FoodMap() {
             San Diego Food Map
           </Typography>
           <AddressLookUp onSearchComplete={onSearchComplete} />
-          <SelfLookUp onClick={locateUser} />
+          {selfLocating &&  <SelfLookUp onClick={locateUser} />}
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"
