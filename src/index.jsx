@@ -184,12 +184,13 @@ function FoodMap() {
       setSelfLocating(true);
     }
     function error(err) {
-       console.warn(`ERROR(${err.code}): ${err.message}`);
-       alert((`We are very sorry, but we can not automatically locate you. The following error occured: ${err.message}\n\nPlease provide your address in the address bar.`))
-       setLocating(false);
-       setSelfLocating(false);
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+      alert(
+        `We are very sorry, but we can not automatically locate you. The following error occured: ${err.message}\n\nPlease provide your address in the address bar.`
+      );
+      setLocating(false);
+      setSelfLocating(false);
     }
-    
   };
 
   // Effect to load our data
@@ -291,7 +292,7 @@ function FoodMap() {
             San Diego Food Map
           </Typography>
           <AddressLookUp onSearchComplete={onSearchComplete} />
-          {selfLocating &&  <SelfLookUp onClick={locateUser} />}
+          {selfLocating && <SelfLookUp onClick={locateUser} />}
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"
