@@ -28,14 +28,13 @@ import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 // Load And Parse Data
-import parse from 'csv-parse/lib/sync';
 import axios from 'axios';
 
 
 // Constants
 const SAN_DIEGO_CENTER = [32.8546305,-117.051348]
 const SAN_DIEGO_ZOOM = 10
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/1PACX-1vTSnF1wYkCiAbHAqhs_WG2i0EjVh5JPRTAp5pQW-9b_52TsYuaEOzNgz8EbFEGO6JB1o2Okd4QWRAWR/pub?output=csv"
+const DATA_URL = "https://opensandiego-data.s3-us-west-1.amazonaws.com/data/sdfoodmap/sdfoodmap211data.json.json"
 const DRAWER_WIDTH = 240;
 
 // leaflet css does not import into webpack nicely
@@ -146,11 +145,36 @@ function FoodMap(){
     // Effect to load our data
     useEffect(() => {
         if(data.length == 0){
-            axios.get(CSV_URL).then((response) => {
-                const locations = parse(
-                    response.data, 
-                    { columns: true,skip_empty_lines: true}
-                )
+            axios.get(DATA_URL).then((response) => {
+                const template = {
+                    Id: "",
+                    Name: "",
+                    Description__c: "",
+                    Full_Service_Name__c: "",
+                    Hours_of_Operation__c: "",
+                    Agency__c: "",
+                    What_to_do_next__c: "",
+                    Geo_Location__Latitude__s: 0,
+                    Geo_Location__Longitude__s: 0,
+                    Physical_Address__c: "",
+                    Physical_Address_Line_2__c: "",
+                    Physical_City__c: "",
+                    Physical_State__c: "",
+                    Physical_Zip_Code__c: "",
+                    Direct_Referral__c: "",
+                    Phone_Number__c: "",
+                    Physical_Address_Verified__c: false,
+                    Internal_Staff_Notes__c: "",
+                    Service_Status__c: "",
+                    Last_Review_Date__c: "",
+                    Confidential__c: false,
+                    Eligibility__c: "",
+                    Agency__r: {
+                        Name: "",
+                        Id: "",
+                    },
+                };
+                const locations = response.data.map(d => {return {...template, ...d.service};});
                 console.log(locations)
                 setData(locations)
                 window.data = locations
