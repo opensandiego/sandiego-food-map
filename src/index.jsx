@@ -124,7 +124,7 @@ function FoodMap(){
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [data, setData] = React.useState([])
-    const [filters, setFilters] = React.useState({Service_Status__c:"Active"})
+    const [filters, setFilters] = React.useState({})
     const [detail, setDetail] = React.useState(null);
 
     const handleDataLoaded = (data) => {
