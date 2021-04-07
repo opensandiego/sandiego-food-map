@@ -38,7 +38,7 @@ import API from './utils/API';
 
 // Translation
 import { I18nextProvider, i18n } from "react-i18next";
-import i18next from "i18next";
+import i18next, { useTranslation } from "i18next";
 import description_en from "./translations/english/description.json";
 import description_es from "./translations/spanish/description.json";
 
@@ -170,7 +170,7 @@ function FoodMap() {
   const [centerZoom, setCenterZoom] = React.useState([32.8546305, -117.051348])
   const [position, setPosition] = React.useState(SAN_DIEGO_CENTER)
 
-  // const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleDataLoaded = (data) => {
     setData(data)
@@ -335,7 +335,7 @@ function FoodMap() {
 ReactDOM.render(
   <>
     <I18nextProvider i18n={i18n}>
-      <FoodMap {...props} />
+      <FoodMap />
     </I18nextProvider>
   </>,
 
