@@ -1,4 +1,4 @@
-name: San Diego Food Map Build  
+name: San Diego Food Map Build and Test
 on: 
   push:
   pull_request:
@@ -21,3 +21,4 @@ jobs:
       - run: npm ci
 
       - run: npm run build
+      - run: npm test
