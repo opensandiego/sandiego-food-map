@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import DetailDialog from './components/DetailDialog.jsx';
 import DrawerStyled from './components/DrawerStyled.jsx'
+import FilterType from './components/FilterType.jsx'
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import ListItem from '@material-ui/core/ListItem';
@@ -69,9 +70,6 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
-    flexGrow: 1,
-  },
   hide: {
     display: 'none',
   },
@@ -109,9 +107,10 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
-  title: {
+  header: {
     marginLeft: theme.spacing(2),
     flex: 1,
+    display: 'flex',
   },
   dialogContent: {
     marginTop: '100px'  // TODO make this adapt to header height
@@ -124,7 +123,7 @@ function FoodMap(){
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [data, setData] = React.useState([])
-    const [filters, setFilters] = React.useState({Service_Status__c:"Active"})
+    const [filters, setFilters] = React.useState({Service_Status__c: (x) => x == "Active"})
     const [detail, setDetail] = React.useState(null);
 
     const handleDataLoaded = (data) => {
@@ -143,6 +142,10 @@ function FoodMap(){
         setOpen(false);
     }
 
+    const addFilter = (name, filter) => {
+        setFilters(Object.assign({}, filters, {[name]: filter}))
+    }
+  
     // Effect to load our data
     useEffect(() => {
         if(data.length == 0){
@@ -162,7 +165,7 @@ function FoodMap(){
     // Processed data
     const filtered_list = data.filter((d) => {
         for( var k in filters){
-            if( d[k] != filters[k]){ 
+            if(!filters[k](d[k])){ 
                 return false 
             }
         }
@@ -220,9 +223,12 @@ function FoodMap(){
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" color="inherit" noWrap className={classes.title}>
-                        San Diego Food Map 
-                    </Typography>
+                    <span className={classes.header}>
+                        <Typography variant="h6" color="inherit" noWrap>
+                            San Diego Food Map
+                        </Typography>
+                    <FilterType addFilter={addFilter}/>
+                    </span>
                     <Button 
                         href="https://github.com/opensandiego/sandiego-food-map" 
                         color="inherit"
@@ -231,7 +237,7 @@ function FoodMap(){
                 </Toolbar>
             </AppBar>
 
-        <DrawerStyled open={open} handleDrawerClose={handleDrawerClose} theme={theme} classes={classes}/>
+        <DrawerStyled open={open} handleDrawerClose={handleDrawerClose} theme={theme} classes={classes} addFilter={addFilter}/>
 
             <main
                 className={clsx(classes.content, {
