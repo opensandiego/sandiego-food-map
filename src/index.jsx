@@ -34,14 +34,21 @@ import usZips from 'us-zips';
 // Load And Parse Data
 import parse from 'csv-parse/lib/sync';
 import axios from 'axios';
+import API from './utils/API';
 
-
+// Translation
+import { I18nextProvider, i18n } from "react-i18next";
+import i18next from "i18next";
+import description_en from "./translations/english/description.json";
+import description_es from "./translations/spanish/description.json";
 
 // Constants
 const SAN_DIEGO_CENTER = [32.8546305, -117.051348]
 const SAN_DIEGO_ZOOM = 15
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/1PACX-1vTSnF1wYkCiAbHAqhs_WG2i0EjVh5JPRTAp5pQW-9b_52TsYuaEOzNgz8EbFEGO6JB1o2Okd4QWRAWR/pub?output=csv"
 const DRAWER_WIDTH = 240;
+// const i18n = initializeI18Next(language);
+
 
 // leaflet css does not import into webpack nicely
 const blueIcon = L.icon({
@@ -50,7 +57,6 @@ const blueIcon = L.icon({
 
 // clean tel numbers for tel+ links
 const telLinkRE = /[^\d]/g
-
 
 // From Drawer Example
 // https://material-ui.com/components/drawers/
@@ -74,10 +80,10 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
- searchButton:{
-   marginTop: '1vw',
-   marginBottom: '1vw',
-   marginRight: '10%',
+  searchButton: {
+    marginTop: '1vw',
+    marginBottom: '1vw',
+    marginRight: '10%',
   },
   addressSearchBar: {
     color: 'white',
@@ -132,6 +138,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+// Translation initiation
+i18next.init({
+  interpolation: { escapeValue: false },  // React already does escaping
+  lng: 'en',
+  resources: {
+    en: {
+      description: description_en
+    },
+    es: {
+      description: description_es
+    }
+  }
+});
+
 function MyComponent(props) {
   const map = useMap()
   console.log(props.center, "position props.center")
@@ -149,6 +169,8 @@ function FoodMap() {
   const [search, setSearch] = React.useState([32.8546305, -117.051348])
   const [centerZoom, setCenterZoom] = React.useState([32.8546305, -117.051348])
   const [position, setPosition] = React.useState(SAN_DIEGO_CENTER)
+
+  // const { t, i18n } = useTranslation();
 
   const handleDataLoaded = (data) => {
     setData(data)
@@ -170,7 +192,6 @@ function FoodMap() {
     setSearch(e.target.value)
   }
 
-
   const handleClick = () => {
     const zip = usZips[search]
     console.log(zip.latitude, zip.longitude)
@@ -179,6 +200,12 @@ function FoodMap() {
 
   // Effect to load our data
   useEffect(() => {
+    // API.getPosition(latitude, longitude)
+    // .then(response => {
+
+    // })
+    // .catch(error => console.log(error))
+
     if (data.length == 0) {
       axios.get(CSV_URL).then((response) => {
         const locations = parse(
@@ -191,7 +218,6 @@ function FoodMap() {
       })
     }
   })
-
 
   // Processed data
   const filtered_list = data.filter((d) => {
@@ -211,7 +237,7 @@ function FoodMap() {
     by_zip[d.Physical_Zip_Code__c].push(d);
     return by_zip;
   }, {})
- 
+
   window.by_zip = by_zip
   // Then generate marker clusters
   const marker_clusters = Object.entries(by_zip).map(zip_data => {
@@ -224,7 +250,6 @@ function FoodMap() {
       {markers}
     </MarkerClusterGroup>
   })
-
 
   // Generate Drawer items
   // NOT USED
@@ -239,7 +264,6 @@ function FoodMap() {
   const detailDialog = (detail != null) ? (
     <DetailDialog classes={classes} handleDetailClose={handleDetailClose} detail={detail} />
   ) : null
-
 
   // Return our fragment
   return (
@@ -259,17 +283,17 @@ function FoodMap() {
             San Diego Food Map
                     </Typography>
 
-      <TextField
-        className={classes.addressSearchBar}
-        placeholder="look up an address"
-        color="inherit"
-        onChange={handleZipChange} 
-        name='search' 
-      />
-      <Button startIcon={<SearchIcon  />}  color="inherit" onClick={handleClick} className={classes.searchButton}
-      >  
+          <TextField
+            className={classes.addressSearchBar}
+            placeholder="look up an address"
+            color="inherit"
+            onChange={handleZipChange}
+            name='search'
+          />
+          <Button startIcon={<SearchIcon />} color="inherit" onClick={handleClick} className={classes.searchButton}
+          >
             Search
-           </Button> 
+           </Button>
           <Button
             href="https://github.com/opensandiego/sandiego-food-map"
             color="inherit"
@@ -308,4 +332,36 @@ function FoodMap() {
   )
 }
 
-ReactDOM.render(<FoodMap />, document.getElementById("app"))
+ReactDOM.render(
+  <>
+    <I18nextProvider i18n={i18n}>
+      <FoodMap {...props} />
+    </I18nextProvider>
+  </>,
+
+  document.getElementById('app')
+)
+
+
+
+// ReactDOM.render() {
+//   const { language } = this.props;
+//   const i18n = initializeI18Next(language);
+//   return (
+//     <I18nextProvider i18n={i18n}>
+//       <FoodMap {...props} />
+//     </I18nextProvider>
+//   );
+// };
+// document.getElementById("app");
+
+
+
+// ReactDOM.render(
+
+//       <I18nextProvider i18n={i18next}>
+//           <FoodMap/>
+//       </I18nextProvider>,
+
+//   document.getElementById('app')
+// );

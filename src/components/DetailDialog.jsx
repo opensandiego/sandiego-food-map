@@ -13,6 +13,7 @@ import Slide from '@material-ui/core/Slide';
 
 import { withStyles } from '@material-ui/core/styles';
 
+import {useTranslation} from "react-i18next";
 
 const styles = {
   title: {  
@@ -26,6 +27,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const DetailDialog = ({handleDetailClose, detail, classes}) => 
 {
+
+const {t, i18n} = useTranslation('english');
+
 return (
 <Dialog fullScreen open={true} onClose={handleDetailClose} TransitionComponent={Transition}>
 <AppBar className={classes.detailAppBar}>
@@ -33,6 +37,15 @@ return (
     <IconButton edge="start" color="inherit" onClick={handleDetailClose} aria-label="close">
         <CloseIcon />
     </IconButton>
+
+{/* Test */}
+    <Button onClick={() => i18n.changeLanguage('es')}>
+        Spanish
+    </Button>
+    <Button onClick={() => i18n.changeLanguage('en')}>
+        English
+    </Button>
+
     <Typography variant="h6" className={classes.title}>
         {detail.Name}
     </Typography>
@@ -53,7 +66,8 @@ return (
     </Typography>
     <Typography variant="h6">Description</Typography>
     <Typography>
-            {detail.Description__c}
+            {t('description.text')}
+            {/* {detail.Description__c} */}
     </Typography>
     <Typography variant="h6">Eligibility</Typography>
     <Typography>
