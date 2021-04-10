@@ -114,7 +114,10 @@ const useStyles = makeStyles((theme) => ({
   },
   dialogContent: {
     marginTop: '100px'  // TODO make this adapt to header height
-  }
+  },
+  drawerButton: {
+      width: '80%'
+    }
 }));
 
 
@@ -195,11 +198,12 @@ function FoodMap(){
     })
 
     // Generate Drawer items
-    // NOT USED
     const list_items = filtered_list.map( (d) => {
         const phone = `tel:${d.Phone_Number__c.replaceAll(telLinkRE,'')}`
         return <ListItem key={d.Id}>
-            <Typography>{d.Name}</Typography>
+            <Button onClick={() => setDetail(d)} className={classes.drawerButton}>
+                {d.Name}
+            </Button>
             <Link href={phone}>{d.Phone_Number__c}</Link>
         </ListItem>
     })
@@ -237,7 +241,14 @@ function FoodMap(){
                 </Toolbar>
             </AppBar>
 
-        <DrawerStyled open={open} handleDrawerClose={handleDrawerClose} theme={theme} classes={classes} addFilter={addFilter}/>
+        <DrawerStyled
+            open={open}
+            handleDrawerClose={handleDrawerClose}
+            theme={theme}
+            classes={classes}
+            addFilter={addFilter}
+            listItems={list_items}
+         />
 
             <main
                 className={clsx(classes.content, {

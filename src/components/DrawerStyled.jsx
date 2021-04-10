@@ -9,7 +9,13 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
-const DrawerStyled = ({ classes, open, handleDrawerClose, theme }) => {
+const DrawerStyled = ({
+  classes,
+  open,
+  handleDrawerClose,
+  theme,
+  listItems,
+}) => {
   return (
     <Drawer
       className={classes.drawer}
@@ -30,11 +36,7 @@ const DrawerStyled = ({ classes, open, handleDrawerClose, theme }) => {
         </IconButton>
       </div>
       <Divider />
-      <List>
-        <ListItem>
-          <ListItemText>Filtering Coming Soon!</ListItemText>
-        </ListItem>
-      </List>
+      <List>{listItems}</List>
     </Drawer>
   );
 };
