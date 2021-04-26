@@ -28,11 +28,9 @@ TARGET_TAXONOMIES = {
 }
 
 
-def process(path):
+def process(data):
     filters = (lambda d: d["service"]["Service_Status__c"] == "Active",)
     soup_kithen_regex = re.compile(r"/(?:)lunch|meal|breakfast|dinner/", re.IGNORECASE)
-    with open(path) as f:
-        data = json.load(f)
     for d in data:
         if all(f(d) for f in filters):
             for tax in d.get("taxonomies", []):
@@ -50,4 +48,13 @@ def process(path):
 
 
 if __name__ == "__main__":
-    print(list(process(sys.argv[1])))
+    arg_len = len(sys.argv)
+    if arg_len < 2:
+        sys.exit("File source and destination not passed")
+    elif arg_len == 2:
+        sys.exit("File destination not passed")
+    with open(sys.argv[1]) as f:
+        data = json.load(f)
+    data = list(process(data))
+    with open(sys.argv[2], "w") as f:
+        json.dump(data, f, indent=2)
