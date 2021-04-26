@@ -44,6 +44,9 @@ def process(data):
                     else SiteType.foodBank
                 )
             d["service"]["Type"] = site_type.value
+            d["service"]["Taxonomies"] = [
+                tax["Name"] for tax in d.get("taxonomies", [])
+            ]
             yield d
 
 
